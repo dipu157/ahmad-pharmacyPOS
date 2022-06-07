@@ -1,8 +1,9 @@
 ###################
-madpharma-pharmacy management system
+Ahmad-pharmacy management
 ###################
 
-**I am available for PHP,Laravel,Codeigniter work, check out my Fiverr profile:**
+This project is copied from -- https://github.com/Devnawjesh/mad-pharma
+and  a few edited.
 
 
 *******************
