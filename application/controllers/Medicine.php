@@ -46,7 +46,7 @@ class Medicine extends CI_Controller {
     public function Create(){
         if($this->session->userdata('user_login_access') != False) {
         $data = array();
-        $data['supplierList'] = $this->supplier_model->getAllSupplier();   
+      //  $data['supplierList'] = $this->supplier_model->getAllSupplier();   
         $data['companylist'] = $this->medicine_model->getAllCompany();    
         $this->load->view('backend/Add_medicine',$data);
         }
@@ -63,7 +63,7 @@ class Medicine extends CI_Controller {
 
         if($this->session->userdata('user_login_access') != False) {
             $data['medicineList'] = $this->medicine_model->getAllMedicine();
-            $data['companylist'] = $this->medicine_model->getAllCompany();
+           $data['companylist'] = $this->medicine_model->getAllCompany();
             $data['supplierList'] = $this->supplier_model->getAllSupplier();
             $this->load->view('backend/List_medicine',$data);
         }

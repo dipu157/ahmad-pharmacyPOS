@@ -453,6 +453,7 @@ $(this.target).find('input').autocomplete();
               $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
               } else if(response.status == 'success') {
+                alert("Save Successfully ");
                   $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
                 window.setTimeout(function() {

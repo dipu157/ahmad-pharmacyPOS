@@ -27,7 +27,7 @@ class Purchase extends CI_Controller {
     public function Create(){ 
          if($this->session->userdata('user_login_access') != False) {
         $data = array();
-        $data['supplierList'] = $this->supplier_model->getAllSupplier();
+     //   $data['supplierList'] = $this->supplier_model->getAllSupplier();
         $data['bankinfo'] = $this->user_model->Getbankinfowithsupplier();     
         $this->load->view('backend/Add_purchase',$data);
         }

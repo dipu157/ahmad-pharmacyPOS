@@ -81,22 +81,6 @@
 
                                             </div>
 
-                                            <div class="col-md-6" id="storeneme" style="display:none">
-
-                                                <div class="form-group row">
-
-                                                    <label class="control-label text-right col-md-3">Pharmacy Name</label>
-
-                                                    <div class="col-md-9">
-
-                                                        <input type="text" class="form-control pname" name="pname" placeholder="Phrmacy Name" required minlength="1" value="" required>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
                                             <div class="col-md-6">
 
                                                 <div class="form-group row">
@@ -313,19 +297,6 @@
                                                     $('#storeneme').show();  
 
                                                 }
-/*
-                                                else if(type =='WalkIn'){
-
-                                                    console.log(type);
-
-                                                    $('#tamount').hide();
-
-                                                    $('#cregular').hide();
-
-                                                    $('#tdiscount').hide();  
-                                                    $('#storeneme').hide();  
-
-                                                }*/
 
                                             });
 
@@ -376,7 +347,6 @@
                if(img.length == 0){
                 var ctype = $(".ctype").val();
                 var cname = $(".cname").val();
-                var pname = $(".pname").val();
                 var cemail = $(".cemail").val();
                 var cphone = $(".cphone").val();
                 var caddress = $(".caddress").val();
@@ -393,7 +363,6 @@
                     dataURL: dataURL,
                     ctype: ctype,
                     cname: cname,
-                    pname: pname,
                     cphone: cphone,
                     cemail: cemail,
                     caddress: caddress,
@@ -409,6 +378,7 @@
               } else if(response.status == 'success') {
                   $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
+                  alert("Data Save Successfully !!");
                 window.setTimeout(function() {
                     window.location = response.curl;
                 }, 3000);
@@ -438,6 +408,7 @@
               } else if(response.status == 'success') {
                   $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
+                  alert("Data Save Successfully !!");
                 window.setTimeout(function() {
                     window.location = response.curl;
                 }, 3000);
