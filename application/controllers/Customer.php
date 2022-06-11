@@ -128,7 +128,7 @@ class Customer extends CI_Controller {
         $note =     $this->input->post('cnote');
         $entrydate = strtotime(date("m/d/Y"));
         $oldmail =  $this->customer_model->getEmailId($email);
-         $this->load->library('image_lib');
+       //  $this->load->library('image_lib');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters();
         $this->form_validation->set_rules('cname', 'name', 'trim|required|min_length[1]|max_length[150]|xss_clean');
@@ -145,89 +145,6 @@ class Customer extends CI_Controller {
             $response['message'] = "Your Email Or Phone number already exist";
             $this->output->set_output(json_encode($response));
             } else {
-         if($_FILES['img_url']['name']){
-            $file_name   = $_FILES['img_url']['name'];
-			$fileSize    = $_FILES["img_url"]["size"]/1024;
-			$fileType    = $_FILES["img_url"]["type"];
-			$new_file_name='';
-            $new_file_name .= $cid;
-            $config = array(
-                'file_name' => $new_file_name,
-                'upload_path' => "./assets/images/customer",
-                'allowed_types' => "gif|jpg|png|jpeg",
-                'overwrite' => False,
-                'max_size' => "40480000",
-                'max_height' => "1200",
-                'max_width' => "1200"
-            );
-            $this->load->library('Upload', $config);
-            $this->upload->initialize($config);                
-            if (!$this->upload->do_upload('img_url')) {
-            $response['status'] = 'error';
-            $response['message'] = $this->upload->display_errors();
-            $this->output->set_output(json_encode($response));    			
-            }
-			else {
-            $image_data =   $this->upload->data();
-            $configer =  array(
-              'image_library'   => 'gd2',
-              'source_image'    =>  $image_data['full_path'],    
-              'maintain_ratio'  =>  TRUE,
-              'width'           =>  160,
-              'height'          =>  100,
-            );
-            $this->image_lib->clear();
-            $this->image_lib->initialize($configer);
-            $this->image_lib->resize();
-                                
-                $path = $this->upload->data();
-                $img_url = $path['file_name'];
-                $data = array();
-                $data = array(
-                    'c_id'      => $cid,
-                    'c_name'    => $name,
-                    'pharmacy_name'=> $pname,
-                    'c_email'   => $email,
-                    'c_type'    => $group,
-                    'cus_contact' => $phone,
-                    'c_address' => $address,
-                    'regular_discount' => $rdiscount,
-					'target_amount'=> $tamount,
-					'target_discount'=> $tdiscount,
-					'c_note'   => $note,
-					'c_img'    => $img_url,
-					'barcode'    => $batchno,
-					'entrydate'=> $entrydate
-                );
-                $success = $this->customer_model->Add_customer_info($data);
-                if($this->db->affected_rows()){
-                $data = array();
-                $data = array(
-                    'customer_id' => $cid,
-                    'total_balance' => 0,
-                    'total_paid' => 0,
-                    'total_due' => 0,
-                );
-                $success = $this->customer_model->Create_Customer_balance($data);
-                    if($this->db->affected_rows()){
-		              //load library
-        		      $this->load->library('zend');
-        		      //load in folder Zend
-        		      $this->zend->load('Zend/Barcode');
-        		      //generate barcode
-                      $barcode = $batchno;
-        		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/cbarcode/{$barcode}.png");                        
-                $response['status'] = 'success';    
-                $response['message'] = "Successfully Created";
-                $response['curl'] = base_url()."Customer/Create"; 
-                $this->output->set_output(json_encode($response));                       
-                    }                     
-                   
-                }
-
-            }
-        } else {
                 $data = array();
                 $data = array(
                     'c_id' => $cid,
@@ -253,23 +170,14 @@ class Customer extends CI_Controller {
                     'total_paid' => 0,
                     'total_due' => 0,
                 );
-                    $success = $this->customer_model->Create_Customer_balance($data);
-                    if($this->db->affected_rows()){
-		              //load library
-        		      $this->load->library('zend');
-        		      //load in folder Zend
-        		      $this->zend->load('Zend/Barcode');
-        		      //generate barcode
-                      $barcode = $batchno;
-        		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/cbarcode/{$barcode}.png");                        
+                $success = $this->customer_model->Create_Customer_balance($data);                        
                 $response['status'] = 'success';    
                 $response['message'] = "Successfully Created";
                 $response['curl'] = base_url()."Customer/Create"; 
                 $this->output->set_output(json_encode($response));                       
-                    }                      
+                                      
                 } 
-            }
+          //  }
         }
         }
     }

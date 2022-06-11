@@ -102,7 +102,6 @@
 
                                                     <a href="" title="Edit" class="btn btn-sm btn-info waves-effect waves-light medicineid"  data-id="<?php echo $value->product_id; ?>"><i class="fa fa-pencil-square-o"></i></a>
                                                     <a href="" title="Edit" data-toggle="modal" class="btn btn-sm btn-info waves-effect waves-light barcodegenerator"  data-id="<?php echo $value->product_id; ?>"><i class="fa fa-barcode"></i></a>
-                                                    <!--<a onclick="return confirm('Are you sure to delete this data?')" href="<?php echo base_url();?>medicine/delete?id=<?php echo $value->product_id;?>" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>-->
 
                                                 </td>
 

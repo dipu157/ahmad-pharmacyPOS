@@ -193,37 +193,6 @@
 
                                             </div>
 
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group row">
-                                                   
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Image</label>
-                                                    <div class="col-md-7 col-sm-7">
-                                                        <input type="file" name="img_url" id="img_url" class="form-control" aria-describedby="fileHelp">
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-2">
-                                                        <div class="file_prev" ></div>
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                            <div class="col-md-6 col-sm-12">
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group row">
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Take Photo </label>
-                                                    <div class="col-md-9 col-sm-12">
-                                                            <video id="video" width="220" height="180" onclick="takePhoto()" autoplay></video>
-                                                            <!--<button id="btnSnap" onclick="takePhoto()">Snap Photo</button>-->
-                                                    </div>
-                                                </div>
-                                            </div>                                             
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="form-group row">
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Canvas Photo </label>
-                                                    <div class="col-md-9 col-sm-12">  
-                                                    <canvas style="float:left" id="canvas" width="220" height="180"></canvas> 
-                                                    </div>
-                                                </div> 
-                                            </div>
                                         </div>
 
                                         <!--/row-->
@@ -304,88 +273,11 @@
                                             
                                     </script> 
     <script>
-        var canvas, context, video, videoObj;
-
-        $(function () {
-            canvas = document.getElementById("canvas");
-            context = canvas.getContext("2d");
-            video = document.getElementById("video");
-
-            // different browsers provide getUserMedia() in differnt ways, so we need to consolidate 
-            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||  navigator.mozGetUserMedia;
-
-            if (navigator.getUserMedia) {
-                navigator.getUserMedia(
-                   { video : true }, // which media
-                   function (stream) {   // success function
-                       video.src = window.URL.createObjectURL(stream);
-                       video.onloadedmetadata = function (e) {
-                           video.play();
-                       };
-                   },
-                   function (err) {  // error function 
-                       console.log("The following error occured: " + err.name);
-                   }
-              );
-            } 
-            else {
-                console.log("getUserMedia not supported");
-            }
-        });
-
-        function takePhoto() {
-            context.drawImage(video, 0, 0, 220, 180);
-        }
         
             $('#cmodel').bind('submit',function(e){
-            // $("#formid").on('submit', function(e) {
+            
                 e.preventDefault();
-                var dataURL = canvas.toDataURL();
-                var img =$('#img_url').val();
-                //
-                console.log(dataURL);
-               if(img.length == 0){
-                var ctype = $(".ctype").val();
-                var cname = $(".cname").val();
-                var cemail = $(".cemail").val();
-                var cphone = $(".cphone").val();
-                var caddress = $(".caddress").val();
-                var tamount = $(".tamount").val();
-                var rdiscount = $(".rdiscount").val();
-                var tdiscount = $(".tdiscount").val();
-                var cnote = $(".cnote").val();
-                $.ajax({
-                  type: 'POST',
-                  url: "Save_Canvas",
-                  dataType:'json',    
-                  cache: false,
-                  data: {
-                    dataURL: dataURL,
-                    ctype: ctype,
-                    cname: cname,
-                    cphone: cphone,
-                    cemail: cemail,
-                    caddress: caddress,
-                    tamount: tamount,
-                    rdiscount: rdiscount,
-                    tdiscount: tdiscount,
-                    cnote: cnote,
-                  },
-                  success: function(response){
-              if(response.status == 'error') { 
-              $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  console.log(response);
-              } else if(response.status == 'success') {
-                  $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  console.log(response);
-                  alert("Data Save Successfully !!");
-                window.setTimeout(function() {
-                    window.location = response.curl;
-                }, 3000);
-              }
-                  }
-                });
-                } else {
+
             var formval = $('#cmodel');
             var data = new FormData(this);
             console.log(data);
@@ -408,7 +300,6 @@
               } else if(response.status == 'success') {
                   $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
-                  alert("Data Save Successfully !!");
                 window.setTimeout(function() {
                     window.location = response.curl;
                 }, 3000);
@@ -418,45 +309,11 @@
             console.error();
           }
             });
-                }
             });
-/*        function savePhoto() {
-            var data = canvas.toDataURL();
-            var title = $("#title").val();
 
-            $.ajax({
-                type: "POST",
-                url: "savephoto.aspx",
-                data: {
-                    photo: data,
-                    title: title
-                }
-            }).done(function (o) {
-                alert("Photo Saved Successfully!");
-            });
-        }*/
     </script>                                               
             <footer class="footer"> © 2017 GenIT Bangladesh </footer>
-<script>
-$("#img_url").on("change", function() {
-    if (typeof FileReader == "undefined") {
-        alert("Your browser doesn't support HTML5, Please upgrade your browser");
-    } else {
-        var container = $(".file_prev");
-        //remove all previous selected files
-        container.empty();
 
-        //create instance of FileReader
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            $("<img />", {
-                src: e.target.result
-            }).appendTo(container);
-        };
-        reader.readAsDataURL($(this)[0].files[0]);
-    }
-});
-    </script>
         </div>
 
 <?php 

@@ -95,6 +95,8 @@ class Medicine extends CI_Controller {
         } else {
             $favourite = $fa;
         }
+
+
         $this->load->library('image_lib');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters();
@@ -105,86 +107,6 @@ class Medicine extends CI_Controller {
 		    $response['status'] = 'error';
             $response['message'] = validation_errors();
             $this->output->set_output(json_encode($response));
-        } else {
-         if($_FILES['webcam']['name']){
-            $file_name = $_FILES['webcam']['name'];
-			$fileSize = $_FILES["webcam"]["size"]/1024;
-			$fileType = $_FILES["webcam"]["type"];
-			$new_file_name='';
-            $new_file_name .= $productid;
-
-
-            $config = array(
-                'file_name' => $new_file_name,
-                'upload_path' => "./assets/images/medicine",
-                'allowed_types' => "gif|jpg|png|jpeg",
-                'overwrite' => False,
-                'max_size' => "40480000", // Can be set to particular file size , here it is 4 MB(2048 Kb)
-                'max_height' => "4300",
-                'max_width' => "4000"
-            );
-            $this->load->library('Upload', $config);
-            $this->upload->initialize($config);                
-            if (!$this->upload->do_upload('webcam')) {
-                $response['status'] = 'error';
-                $response['message'] = $this->upload->display_errors();
-                $this->output->set_output(json_encode($response)); 
-			}
-
-			else {
-            $image_data =   $this->upload->data();
-            $configer =  array(
-              'image_library'   => 'gd2',
-              'source_image'    =>  $image_data['full_path'],    
-              'maintain_ratio'  =>  TRUE,
-              'width'           =>  160,
-              'height'          =>  100,
-            );
-            $this->image_lib->clear();
-            $this->image_lib->initialize($configer);
-            $this->image_lib->resize();
-                
-                $path = $this->upload->data();
-                $product_image = $path['file_name'];
-                $data = array();
-                $data = array(
-                    'product_id' => $productid,
-                    'batch_no' => $batchno,
-                    'supplier_id' => $supplier_id,
-                    'product_name' => $product_name,
-                    'generic_name' => $generic_name,
-                    'strength' => $strength,
-                    'form' => $form,
-                    'box_size' => $box_size,
-                    'trade_price' => $trade_price,
-                    'mrp' => $mrp,
-                    'box_price'=>$box_price,
-                    'side_effect'=>$side_effect,
-                    'product_image'=> $product_image,
-                    'expire_date'=> $expire_date,
-                    'short_stock'=> $shortstock,
-                    'instock'=> 0,
-                    'favourite'=> $favourite,
-                    'discount'=> $discount,
-                    'date'=> strtotime($caruntdate)
-                );
-                    $success = $this->medicine_model->Add_medicine_info($data);
-                    if($this->db->affected_rows()){
-		              //load library
-        		      $this->load->library('zend');
-        		      //load in folder Zend
-        		      $this->zend->load('Zend/Barcode');
-        		      //generate barcode
-                      $barcode = $batchno;
-        		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");                        
-                    $response['status'] = 'success';
-                    $response['message'] = "Successfully Added";
-                    $response['curl'] = base_url()."Medicine/Create";
-                    $this->output->set_output(json_encode($response));                        
-                    }    
-            }
-
         } else {
                 $data = array();
                 $data = array(
@@ -206,8 +128,10 @@ class Medicine extends CI_Controller {
                     'short_stock'=> $shortstock,
                     'instock'=> 0
                 );
+
                     $success = $this->medicine_model->Add_medicine_info($data);
-                    if($this->db->affected_rows()){
+
+                    if($this->db->affected_rows()){                       
 		              //load library
         		      $this->load->library('zend');
         		      //load in folder Zend
@@ -215,114 +139,20 @@ class Medicine extends CI_Controller {
         		      //generate barcode
                       $barcode = $batchno;
         		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");                        
-                        $response['status'] = 'success';
-                        $response['message'] = "Successfully Added";
-                        $response['curl'] = base_url()."Medicine/Create";
-                        $this->output->set_output(json_encode($response));                        
+                      $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");
+
+                      $response['status'] = 'success';
+                      $response['message'] = "Successfully Added";
+                      $response['curl'] = base_url()."Medicine/Create";
+                      $this->output->set_output(json_encode($response));                        
+                                              
                     }    
 
-            }
 
         }
 
     }
 
-    public function Save_Canvas(){
-        $supplier_id        = $this->input->post('supplier');
-        $product_name       = $this->input->post('product_name');
-        $generic_name       = $this->input->post('generic_name');
-        $fa                 = $this->input->post('favourite');
-        $productid          = 'P'.rand(100,50000);        
-        $batchno            = $this->input->post('barcode');        
-        $strength           = $this->input->post('strength');
-        $form               = $this->input->post('formSelect');
-        $box_size           = $this->input->post('box_size');
-        $trade_price        = $this->input->post('trade_price');
-        $mrp                = $this->input->post('mrp');
-        $box_price          = $this->input->post('box_price');
-        $discount           = $this->input->post('discount');
-        $side_effect        = $this->input->post('side_effect');
-        $expire_date        = $this->input->post('expire_date');
-        $shortstock         = $this->input->post('shortstock');
-        $caruntdate         = date("m-d-Y");
-        if($fa==''){
-        $favourite = '0';
-        } else {
-            $favourite = $fa;
-        }
-        $this->load->library('image_lib');
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters();
-        $this->form_validation->set_rules('product_name', 'name', 'trim|required|min_length[1]|max_length[150]|xss_clean');
-        $this->form_validation->set_rules('generic_name', 'Generic', 'trim|xss_clean');
-        $this->form_validation->set_rules('supplier', 'Company', 'trim|required|min_length[1]|max_length[250]|xss_clean');
-        if($this->form_validation->run() == FALSE){
-		    $response['status'] = 'error';
-            $response['message'] = validation_errors();
-            $this->output->set_output(json_encode($response));
-        } else {
-        $img = $_POST['dataURL'];
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $fileData = base64_decode($img);
-        $fileName = $productid.'.png';
-        $fdata = file_put_contents("./assets/images/medicine/$fileName", $fileData);                            
-            $image_data =   $this->upload->data();
-            $configer =  array(
-              'image_library'   => 'gd2',
-              'source_image'    =>  './assets/images/medicine/$fileName',    
-              'maintain_ratio'  =>  TRUE,
-              'width'           =>  160,
-              'height'          =>  100,
-            );
-            $this->image_lib->clear();
-            $this->image_lib->initialize($configer);
-            $this->image_lib->resize();
-                
-                //$path = $this->upload->data();
-                //$product_image = $path['file_name'];
-                $data = array();
-                $data = array(
-                    'product_id' => $productid,
-                    'batch_no' => $batchno,
-                    'supplier_id' => $supplier_id,
-                    'product_name' => $product_name,
-                    'generic_name' => $generic_name,
-                    'strength' => $strength,
-                    'form' => $form,
-                    'box_size' => $box_size,
-                    'trade_price' => $trade_price,
-                    'mrp' => $mrp,
-                    'box_price'=>$box_price,
-                    'side_effect'=>$side_effect,
-                    'product_image'=> $fileName,
-                    'expire_date'=> $expire_date,
-                    'short_stock'=> $shortstock,
-                    'instock'=> 0,
-                    'discount'=> $discount,
-                    'favourite'=> $favourite,
-                    'date'=> strtotime($caruntdate)
-                );
-                    $success = $this->medicine_model->Add_medicine_info($data);
-                    if($this->db->affected_rows()){
-		              //load library
-        		      $this->load->library('zend');
-        		      //load in folder Zend
-        		      $this->zend->load('Zend/Barcode');
-        		      //generate barcode
-                      $barcode = $batchno;
-        		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");                        
-                    $response['status'] = 'success';
-                    $response['message'] = "Successfully Added";
-                    $response['curl'] = base_url()."Medicine/Create";
-                    $this->output->set_output(json_encode($response));                        
-                    }    
-
-        }
-
-    }
 
     public function Update(){
         $id                 = $this->input->post('id');
@@ -519,48 +349,7 @@ class Medicine extends CI_Controller {
     		redirect(base_url() , 'refresh');
     	}        
     }
-    /*
-
-
-                    <div class='card'>
-                        <div id='printArr'>
-                            <p class='card-title' style='text-align:center;margin:2px 0 -10px 0;font-size:11px'><strong>$mvalue->product_name</strong></p>
-                            <div class='card-body text-center'>
-                                <p class='card-title chead' style='text-align:center'>$mvalue->strength &nbsp; &nbsp; &nbsp; $mvalue->form</p>
-                                <img class='' src='$base/assets/images/barcode/$mvalue->batch_no.png' alt='Card image'>
-                                <div class='container'>
-                                    <p style='text-align:center;margin:3px 0 -5px 0;font-size:10px'>EXP:$mvalue->expire_date</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-    public function GetbarcodeInfo(){ 
-        if($this->session->userdata('user_login_access') != False) {
-		$mid= $this->input->get('id');
-		$qid= $this->input->get('qty');
-		$mvalue = $this->medicine_model->GetMedicineValueById($mid);
-            for($x = 1; $x <= $qid; $x++){
-                $base = base_url();
-		echo "
-                    <div class='col-lg-3 col-md-3'>
-                        <div class='card'>
-                        <h4 class='card-title' style='text-align:center'>$mvalue->product_name</h4>
-                        <div class='card-body'>
-                        <h4 class='card-title' style='text-align:center'>$mvalue->strength  $mvalue->form</h4>
-                        <img class='' src='$base/assets/images/barcode/	
-$mvalue->batch_no.png' alt='Card image height='180px' width='240px'>
-                        <p class='card-text' style='text-align:center'>$mvalue->expire_date</p>
-                        </div>
-                        </div>
-                    </div>";
-            }
-        }
-        else{
-    		redirect(base_url() , 'refresh');
-    	}        
-    }*/
+    
 
     public function Barcode(){ 
         if($this->session->userdata('user_login_access') != False) {
