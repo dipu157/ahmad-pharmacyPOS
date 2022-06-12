@@ -56,6 +56,7 @@
         $sql = "SELECT * FROM `supplier_ledger` WHERE `supplier_ledger`.`supplier_id`='$supplier'";
         $query = $this->db->query($sql);
         $result = $query->row();
+        print_r($result);
         return $result;
     }    
     public function Does_supplier_email_exists($email,$phone){

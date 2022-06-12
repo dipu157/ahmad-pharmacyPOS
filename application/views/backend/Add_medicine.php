@@ -333,9 +333,14 @@ $(this.target).find('input').autocomplete();
                       }              
                   },
                   error: function(response) {
+                    
+                    alert("Medicine Add Successfully on Error");
+
                     $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                           console.log(response);
-                    alert("Medicine Add Successfully on Error");
+                    window.setTimeout(function() {
+                            location.reload();
+                        }, 3000);
                     console.error();
                   }
                 });

@@ -850,7 +850,8 @@ class Invoice extends CI_Controller {
             $success = $this->invoice_model->Save_Sales($data);
             if($this->db->affected_rows()){
                 $account = $this->user_model->GetAccountBalance();
-                $id = $account->id;
+                if($account != null){
+                    $id = $account->id;
                 $amount = $account->amount + $grandamount;
                 $paid = $account->paid + $paya;
                 $due = $account->due + $duea;
@@ -859,7 +860,8 @@ class Invoice extends CI_Controller {
                         'paid'      =>  $paid,
                         'due'      =>  $due
                     );
-                $success = $this->user_model->UPDATE_ACCOUNT($id,$data);               
+                $success = $this->user_model->UPDATE_ACCOUNT($id,$data); 
+                }              
                 foreach($_POST['qty'] as $row=>$name){
                     if(!empty($_POST['qty'][$row])){
                 $medicine   =   $_POST['pid'][$row];

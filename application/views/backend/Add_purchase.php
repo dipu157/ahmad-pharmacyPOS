@@ -157,7 +157,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <input type="submit" name="submit" class="btn btn-info" id="FinalSubmitBar" value="Barcode">
+       <!--  <input type="submit" name="submit" class="btn btn-info" id="FinalSubmitBar" value="Barcode"> -->
         <input type="submit" name="submit" class="btn btn-info" id="FinalSubmit" value="Submit">
         <input type="submit" name="submit" class="btn btn-info" id="FinalPrint" value="Print & Submit">
       </div>
@@ -624,10 +624,12 @@ $(this.target).find('input').autocomplete();
                 cache: false,
                 timeout: 600000,
           success: function(response) {
+            alert('success response click');
               if(response.status == 'error') { 
               $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
               } else if(response.status == 'success'){
+                alert('save success');
                   $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                   console.log(response);
                     window.setTimeout(function() {
@@ -636,6 +638,8 @@ $(this.target).find('input').autocomplete();
               }              
           },
           error: function(response) {
+            alert("save in error");
+            location.reload();
             console.error();
           }
             });

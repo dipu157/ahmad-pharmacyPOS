@@ -228,7 +228,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                               </label>
                             </div>
                             <div class="col-md-7">
-                              <input class="form-control gdiscount" name="gdiscount" type="text" value="0" style="" tabindex="-1" readonly>
+                              <input class="form-control gdiscount" name="gdiscount" type="text" value="0" style="" tabindex="-1">
                             </div>
                           </div>
                           <div class="row form-group">
@@ -286,18 +286,18 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           <button type="button" id="saleSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Sale & Invoice
                           </button>
                         </div>
-                        <div class="col-md-3">
+                       <!--  <div class="col-md-3">
                           <button type="button" id="FinalSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Save
                           </button>
-                        </div>
+                        </div> -->
                         <!--<div class="col-md-3">
                           <button type="submit" id="Billhold" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Hold Bill
                           </button>
                         </div>-->
-                        <div class="col-md-3">
+                       <!--  <div class="col-md-3">
                           <button type="submit" id="salesposSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Invoice & Print 
                           </button>
-                        </div>
+                        </div> -->
                       </div>
                       </form>
                   </div>

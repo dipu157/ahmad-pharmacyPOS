@@ -2,33 +2,22 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
-
 class Medicine extends CI_Controller {
-
-
 
 	    function __construct() {
 
         parent::__construct();
 
         $this->load->database();
-
         $this->load->model('login_model');
-
         $this->load->model('user_model');
-
         $this->load->model('supplier_model');
         $this->load->model('medicine_model');
-
-  
-
     }
 
 	public function index()
 
 	{
-
 		#Redirect to Admin dashboard after authentication
 
 		if ($this->session->userdata('user_login_access') != 1)
@@ -40,7 +29,6 @@ class Medicine extends CI_Controller {
           $data= array();
 
         redirect('dashboard/Dashboard');
-
 	}
 
     public function Create(){
@@ -146,9 +134,7 @@ class Medicine extends CI_Controller {
                       $response['curl'] = base_url()."Medicine/Create";
                       $this->output->set_output(json_encode($response));                        
                                               
-                    }    
-
-
+                    }  
         }
 
     }

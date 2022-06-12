@@ -447,16 +447,19 @@ if ($this->session->userdata('user_login_access') != False) {
             echo validation_errors();
         } else {
                 $supplierbalance = $this->supplier_model->Getsupplierbalance($supplier);
-                $total = $supplierbalance->total_amount + $grandamount; 
-                $due = $supplierbalance->total_due + $duev;
-                $paids = $supplierbalance->total_paid + $paid;
-                $data = array();
-                $data = array(
-                    'total_amount' => $total,
-                    'total_paid' => $paids,
-                    'total_due' => $due
-                );
-                $success = $this->supplier_model->update_Supplier_balance($supplier,$data);             
+                if($supplierbalance != null){
+                    $total = $supplierbalance[0]->total_amount + $grandamount; 
+                    $due = $supplierbalance[0]->total_due + $duev;
+                    $paids = $supplierbalance[0]->total_paid + $paid;
+                    $data = array();
+                    $data = array(
+                        'total_amount' => $total,
+                        'total_paid' => $paids,
+                        'total_due' => $due
+                    );
+                    $success = $this->supplier_model->update_Supplier_balance($supplier,$data);
+                }
+                             
                 $data = array();
                 $data = array(
                     'p_id' => $purid,
@@ -497,12 +500,16 @@ if ($this->session->userdata('user_login_access') != False) {
             if($this->db->affected_rows()){
                 /*Root Accounts Start*/
                 $account = $this->user_model->GetAccountBalance();
-                $id = $account->id;
-                $amount = $account->amount - $paid;
-                    $data = array(
-                        'amount'   =>  $amount
-                    );
-                $success = $this->user_model->UPDATE_ACCOUNT($id,$data); 
+                if($account != null){
+                    $id = $account->id;
+                    $amount = $account->amount - $paid;
+                        $data = array(
+                            'amount'   =>  $amount
+                        );
+                    $success = $this->user_model->UPDATE_ACCOUNT($id,$data); 
+                }
+
+                
                 /*Root Accounts end*/                
                 foreach($_POST['qty'] as $row=>$name){
                     if(!empty($_POST['qty'][$row])){
