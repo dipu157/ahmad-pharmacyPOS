@@ -121,20 +121,25 @@ class Medicine extends CI_Controller {
 
                     if($this->db->affected_rows()){                       
 		              //load library
-        		      $this->load->library('zend');
+        		    //  $this->load->library('zend');
         		      //load in folder Zend
-        		      $this->zend->load('Zend/Barcode');
+        		     // $this->zend->load('Zend/Barcode');
         		      //generate barcode
-                      $barcode = $batchno;
-        		      $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
-                      $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");
+                    //  $barcode = $batchno;
+        		   //   $file = Zend_Barcode::draw('code128', 'image', array('text' => $barcode,'barHeight'=> 30), array());
+                    //  $store_image = imagepng($file,"./assets/images/barcode/{$barcode}.png");
 
                       $response['status'] = 'success';
                       $response['message'] = "Successfully Added";
                       $response['curl'] = base_url()."Medicine/Create";
                       $this->output->set_output(json_encode($response));                        
                                               
-                    }  
+                    }  else{
+                        $response['status'] = 'error';
+                      $response['message'] = "There is something Wrong!!";
+                      $response['curl'] = base_url()."Medicine/Create";
+                      $this->output->set_output(json_encode($response)); 
+                    }
         }
 
     }

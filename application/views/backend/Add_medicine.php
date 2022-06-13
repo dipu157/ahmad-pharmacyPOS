@@ -119,11 +119,11 @@
 
                                                 <div class="form-group row">
 
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Trade Price</label>
+                                                    <label class="control-label text-right col-md-3 col-sm-12">Trade Price with VAT</label>
 
                                                     <div class="col-md-9 col-sm-12">
 
-                                                        <input type="number" name="trade_price" class="form-control trade_price" placeholder="Trade Price" required>
+                                                        <input type="number" name="trade_price" class="form-control trade_price" placeholder="Trade Price with VAT" required>
 
                                                     </div>
 
@@ -170,21 +170,9 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-6 col-sm-12">
 
-                                                <div class="form-group row">
+                                            <input type="hidden" name="expire_date" class="form-control expire_date" value="2030-10-19">
 
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Expire Date</label>
-
-                                                    <div class="col-md-9 col-sm-12">
-
-                                                        <input type="text" name="expire_date" class="form-control expire_date" placeholder="Expire Date" id="datepicker" required>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
                                             <div class="col-md-6 col-sm-12">
                                                 <div class="form-group row">
                                                     <label class="control-label text-right col-md-3 col-sm-12">Short Quantity</label>
@@ -318,13 +306,15 @@ $(this.target).find('input').autocomplete();
                 
                   success: function(response) {
 
-                    alert("Medicine Add Successfully 1");
-
                       if(response.status == 'error') { 
+
                       $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                           console.log(response);
+
                       } else if(response.status == 'success') {
-                        alert("Medicine Add Successfully 2");
+
+                        alert("Medicine Add Successfully");
+                        
                           $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
                           console.log(response);
                         window.setTimeout(function() {
@@ -332,17 +322,25 @@ $(this.target).find('input').autocomplete();
                         }, 3000);
                       }              
                   },
-                  error: function(response) {
-                    
-                    alert("Medicine Add Successfully on Error");
 
-                    $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                          console.log(response);
-                    window.setTimeout(function() {
-                            location.reload();
-                        }, 3000);
-                    console.error();
-                  }
+
+                  error: function(xhr, status, error) {
+                      var err = eval("(" + xhr.responseText + ")");
+                      alert(err.Message);
+                    }
+
+
+                  // error: function(response) {
+                    
+                  //   // alert("Medicine Add Successfully on Error");
+
+                  //   // $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                  //   //       console.log(response);
+                  //   // window.setTimeout(function() {
+                  //   //         location.reload();
+                  //   //     }, 3000);
+                  //   console.error();
+                  // }
                 });
                 
             });

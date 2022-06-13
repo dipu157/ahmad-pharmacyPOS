@@ -34,7 +34,7 @@
                                 <h4 class="m-b-0 text-white">Add Closing</h4>
                             </div>
                             <div class="card-body">
-                                <form action="Save_Closing" method="post" enctype="multipart/form-data" id="ClosimgForm" class="form-horizontal">
+                                <form action="Save_Closing" method="post" enctype="multipart/form-data" id="ClosingForm" class="form-horizontal">
                                     <div class="form-body">
                                         <hr class="m-t-0 m-b-40">
                                         <div class="row">
