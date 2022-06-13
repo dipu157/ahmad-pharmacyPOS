@@ -4,29 +4,6 @@
 ?>
         <div class="page-wrapper">
 
-<!--
-            <div class="row page-titles">
-
-                <div class="col-md-5 align-self-center">
-
-                    <h3 class="text-themecolor">Dashboard</h3>
-
-                </div>
-
-                <div class="col-md-7 align-self-center">
-
-                    <ol class="breadcrumb">
-
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-
-                        <li class="breadcrumb-item ">Dashboard</li>
-
-                    </ol>
-
-                </div>
-
-            </div>
--->
             <style>
                 .batch-d{
                     margin-top: 10px;
@@ -439,7 +416,7 @@
                 </div>
             </div>
 
-            <footer class="footer"> © 2017 GenIT Bangladesh </footer>
+            <footer class="footer"> © Ahmad Pharma Bangladesh </footer>
 
         </div>
 

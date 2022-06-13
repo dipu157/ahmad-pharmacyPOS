@@ -6,15 +6,7 @@ $this->load->view('backend/sidebar');
   <div class="flashmessage">
   </div>
   <div class="container-fluid" style="padding-top: 9px;">
-    <!--<div class="row m-b-10"> 
-<div class="col-7">
-<button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a href="<?php echo base_url()?>invoice/create" class="text-white"><i class="" aria-hidden="true"></i> New Invoice</a></button>
-    <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a href="invoice-pos.php" class="text-white"><i class="" aria-hidden="true"></i> POS Invoice</a></button>
-    <button type="button" class="btn btn-primary"><i class="fa fa-bars"></i><a href="invoice-manage.php" class="text-white"><i class="" aria-hidden="true"></i> Manage Invoice </a></button>
-    </div>
-<div class="col-5" id="sales" style="color:red">
-</div>
-</div>-->
+
    <style>
    
 .b-r-0{border-right:0px!important;}
@@ -228,7 +220,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                               </label>
                             </div>
                             <div class="col-md-7">
-                              <input class="form-control gdiscount" name="gdiscount" type="text" value="0" style="" tabindex="-1">
+                              <input class="form-control gdiscount" name="gdiscount" type="text" value="" style="" tabindex="-1">
                             </div>
                           </div>
                           <div class="row form-group">
@@ -286,18 +278,18 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           <button type="button" id="saleSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Sale & Invoice
                           </button>
                         </div>
-                       <!--  <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <button type="button" id="FinalSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Save
                           </button>
-                        </div> -->
-                        <!--<div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
                           <button type="submit" id="Billhold" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Hold Bill
                           </button>
-                        </div>-->
-                       <!--  <div class="col-md-3">
+                        </div> -->
+                        <div class="col-md-3">
                           <button type="submit" id="salesposSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Invoice & Print 
                           </button>
-                        </div> -->
+                        </div> 
                       </div>
                       </form>
                   </div>
@@ -324,19 +316,19 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
         </div>
       </div>
     </div>
-<div id="invoicemodal" class="modal fade" role="dialog" >
+<!-- <div id="invoicemodal" class="modal fade" role="dialog" >
   <div class="modal-dialog" style="width: 350px;">
-    <!-- Modal content-->
+    
     <div class="modal-content" id="invoicedom">
 
-    </div><!-- ./model-content  -->
+    </div>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
   </div>
-</div>    
+</div>   -->  
     <!--Invoice and print view Modal-->
-<!--<div class="modal fade" id="invoicemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="invoicemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -352,8 +344,8 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
       </div>
     </div>
   </div>
-</div> -->
-    <footer class="footer"> © 2017 GenIT Bangladesh 
+</div> 
+    <footer class="footer"> © Ahmad Pharma Bangladesh 
     </footer>
   </div>
   <script>
@@ -408,42 +400,7 @@ $( ".close" ).click(function() {
     });
     </script>
   <!--Hold data-->
-         <script type="text/javascript">
-        $(document).ready(function () {
-        $("#Billhold").on('click',function (event) {
-            event.preventDefault();
-            var formval = $('#SalesFormConfirm')[0];
-            var data = new FormData(formval);
-            $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: "Hold_Pos",
-                dataType: 'json',
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-          success: function(response) {
-              if(response.status == 'error') { 
-              $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  console.log(response);
-              } else if(response.status == 'success'){
-                  $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  //console.log(response);
-                    window.setTimeout(function() {
-                    window.location = response.curl;
-                }, 3000);
-              }              
-          },
-          error: function(response) {
-            console.error();
-          }
-            });
-            });
-
-    });
-    </script> 
+      
   <!--sale & invoice data-->
          <script type="text/javascript">
         $(document).ready(function () {
@@ -509,9 +466,9 @@ $( ".close" ).click(function() {
               //document.getElementById("posinfo")[0].reset();
                 $("#invoicedom").html(response);
                 window.setTimeout(function() {
-                    location.reload();
-                }, 1000);              
-                //$("#invoicemodal").modal("show"); 
+                  //  location.reload();
+                }, 6000);              
+                $("#invoicemodal").modal("show"); 
             var mode = 'iframe'; //popup
             var close = mode == "popup";
             var options = {
@@ -594,13 +551,16 @@ $( ".close" ).click(function() {
             var total = $(rows).find(".grandtotal"); 
             var payable = $(rows).find(".payable"); 
             var pay = $(rows).find(".pay"); 
+
             var payableval = $('.payable').val(); 
-            var payval =$('.pay').val();
-              console.log(payval);
+            var payval = $('.pay').val();
+            var tdiscount = parseFloat($(discount).val());
+
             var returnval;
               returnval = payval - payableval;
             if(returnval<=0){
                   $(".due").val(Math.abs(returnval).toFixed(2));
+                  var returnval = 0;
               }else if(returnval > 0){
                  $(".due").val(''); 
               }
@@ -610,7 +570,7 @@ $( ".close" ).click(function() {
         });
    </script> 
     <!--Customer information for c_type & c_name-->
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
       $(document).on('change', ".customer", function (e) {
         e.preventDefault(e);
@@ -640,7 +600,7 @@ $( ".close" ).click(function() {
                 });
             });          
         });   
-     </script>-->
+     </script>
      <!--After keypress Event-->
         
     <!--Customer information for c_type & c_name-->
