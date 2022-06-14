@@ -296,58 +296,50 @@ $this->load->view('backend/sidebar');
     <!--Review form calculation-->
     <script type="text/javascript">
     $(document).ready(function () {
-    $(document).on('keyup','.qtyval, .tardepriceval, .totalval, .wholesalerval, .tdiscountval, .rpaid, .rdue',function() {
-    var discountamount = 0;
-    //var total;
-    var gtotal = 0;
-    var rows = this.closest('#ReviewForm tr');
-    var quantity = $(rows).find(".qtyval");
-    var price = $(rows).find(".tardepriceval");
-    var rev_discount = $(rows).find(".wholesalerval");
-    var qty = parseInt($(quantity).val());
-    var trade = parseFloat($(price).val());
-    var discount = parseFloat($(rev_discount).val());
-    var total = 0;
-    if(isNaN(qty) == true){
-    total = 0;
-    /*                 var theTotal = fnAlltotal(total);
-    console.log( "first " + total);*/
-    } else {
-    total =  Math.round(qty * trade);
-    var wd_total = total;
-    //var discount = ((discount/100)* (qty * trade));
-    }
-    if(isNaN(discount) == true){
-    total = wd_total;
-    /*                 var theTotal = fnAlltotal(total);
-    console.log( "first " + total);*/
-    } else {
-    total = Math.round(total - (discount * total)/100);
-    }
-    
-    $(rows).find('[name="totalval[]"]').val(total);
-    /*$(rows).find('[name="tdiscountval[]"]').val(discount);*/
-    var sum = 0;
-    $(".totalval").each(function(index){
-    sum += parseFloat($(this).val());
-    });
-    $(".gtotalval").val(Math.round(sum));
-    var rpaid = $(rows).find(".rpaid");
-    var rpaidval = parseInt($(rpaid).val());
-    var gtotal = $(rows).find(".gtotal");
-    var gtotalv = parseInt($(".gtotal").val(sum));
-    console.log(sum);
-    var rdueval = 0;
-    if(isNaN(rpaidval) == true){
-    rdueval = 0;
-    
-    /*                 var theTotal = fnAlltotal(total);
-    console.log( "first " + total);*/
-    } else {
-    var rdueval = sum - rpaidval;
-    }
-    $(".rdue").val(rdueval);
-    });
+        $(document).on('keyup','.qtyval, .tardepriceval, .totalval, .wholesalerval, .tdiscountval, .rpaid, .rdue',function() {
+        var discountamount = 0;
+        //var total;
+        var gtotal = 0;
+        var rows = this.closest('#ReviewForm tr');
+        var quantity = $(rows).find(".qtyval");
+        var price = $(rows).find(".tardepriceval");
+        var rev_discount = $(rows).find(".wholesalerval");
+
+        var qty = parseInt($(quantity).val());
+        var trade = parseFloat($(price).val());
+        var discount = parseFloat($(rev_discount).val());
+        var total = 0;
+            if(isNaN(qty) == true){
+            total = 0;
+            } else {
+            total =  Math.round(qty * trade);
+            var wd_total = total;
+            }
+            if(isNaN(discount) == true){
+            total = wd_total;
+            } else {
+            total = Math.round(total - (discount * total)/100);
+            }
+        
+            $(rows).find('[name="totalval[]"]').val(total);
+            var sum = 0;
+            $(".totalval").each(function(index){
+            sum += parseFloat($(this).val());
+            });
+            $(".gtotalval").val(Math.round(sum));
+        var rpaid = $(rows).find(".rpaid");
+        var rpaidval = parseInt($(rpaid).val());
+        var gtotal = $(rows).find(".gtotal");
+        var gtotalv = parseInt($(".gtotal").val(sum));
+        console.log(sum);
+        var rdueval = 0;
+            if(isNaN(rpaidval) == true){
+            rdueval = 0;
+            } else {
+            var rdueval = sum - rpaidval;
+            }
+        $(".rdue").val(rdueval);
+        });
     });
     </script>
     <!--Add new purchase-->

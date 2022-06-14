@@ -6,8 +6,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Invoice extends CI_Controller {
 
-
-
 	    function __construct() {
 
         parent::__construct();
@@ -15,11 +13,8 @@ class Invoice extends CI_Controller {
         $this->load->database();
 
         $this->load->model('login_model');
-
         $this->load->model('user_model');
-
         $this->load->model('medicine_model');
-
         $this->load->model('customer_model');
         $this->load->model('supplier_model');
         $this->load->model('invoice_model');

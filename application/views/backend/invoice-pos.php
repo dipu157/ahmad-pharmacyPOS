@@ -216,7 +216,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           </div>
                           <div class="row form-group">
                             <div class="col-md-5">
-                              <label for="example-text-input" class=" col-form-label pos-label">Discount
+                              <label for="example-text-input" class=" col-form-label pos-label">Discount (%)
                               </label>
                             </div>
                             <div class="col-md-7">
@@ -552,19 +552,26 @@ $( ".close" ).click(function() {
             var payable = $(rows).find(".payable"); 
             var pay = $(rows).find(".pay"); 
 
+            var totalval = $('.grandtotal').val(); 
             var payableval = $('.payable').val(); 
+            var pdiscount = $('.gdiscount').val(); 
             var payval = $('.pay').val();
-            var tdiscount = parseFloat($(discount).val());
 
-            var returnval;
-              returnval = payval - payableval;
-            if(returnval<=0){
-                  $(".due").val(Math.abs(returnval).toFixed(2));
-                  var returnval = 0;
-              }else if(returnval > 0){
-                 $(".due").val(''); 
-              }
-              $(".return").val(returnval.toFixed(2));
+              var returnval;
+              payableval = Math.round(totalval - (pdiscount * totalval)/100);
+              $(".payable").val(payableval.toFixed(2));
+              //console.log(payableval);
+                returnval = payval - payableval;
+              if(returnval<=0){
+                    $(".due").val(Math.abs(returnval).toFixed(2));
+                    $(".payable").val(payableval.toFixed(2));
+                    var returnval = 0;
+                }else if(returnval > 0){
+                   $(".due").val(''); 
+                   $(".payable").val(payableval.toFixed(2));
+                }
+                $(".return").val(returnval.toFixed(2));
+                $(".payable").val(payableval.toFixed(2));
 
           });
         });
