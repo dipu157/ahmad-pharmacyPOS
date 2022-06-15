@@ -69,10 +69,10 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           <input name="customer_type" value="Regular" type="radio" id="regular_customer"  tabindex="-1">
                           <label for="regular_customer">Regular Customer</label>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <input name="customer_type" value="Wholesale" type="radio" id="wholesale_customer" tabindex="-1">
                           <label for="wholesale_customer">Wholesale Customer</label>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-2" style="margin-left: -42px;">
                             <a href="<?php echo base_url();?>Customer/Create" target="_blank" class="btn btn-sm btn-info waves-effect waves-light" tabindex="-1"><b>Create New Customer</b></a>
@@ -599,9 +599,11 @@ $( ".close" ).click(function() {
                     $('#SalesForm').find('[name="customer_id"]').val(response.mvalue.c_id).end();
                         if(response.mvalue.c_type == 'Regular') {
                         $('#SalesForm').find(':radio[id=regular_customer][value="Regular"]').prop('checked', true).end();
-                        } else if(response.mvalue.c_type == 'Wholesale') {
-                        $('#SalesForm').find(':radio[id=wholesale_customer][value="Wholesale"]').prop('checked', true).end();
-                        }else if(response.mvalue.c_type == 'WalkIn') {
+                        } 
+                        // else if(response.mvalue.c_type == 'Wholesale') {
+                        // $('#SalesForm').find(':radio[id=wholesale_customer][value="Wholesale"]').prop('checked', true).end();
+                        // }
+                        else if(response.mvalue.c_type == 'WalkIn') {
                         $('#SalesForm').find(':radio[id=WalkIn_customer][value="WalkIn"]').prop('checked', true).end();
                         }                    
                 });
@@ -897,7 +899,7 @@ $("#qty").keypress(function(e) {
               
              $("#posinfo").append(response);
               calc_total();
-              calc_discount();
+            //  calc_discount();
               function calc_total(){
                   var sum = 0;
                   $(".totall").each(function(){
@@ -909,7 +911,7 @@ $("#qty").keypress(function(e) {
                       pay += parseFloat($(this).val());
                   });
                   
-                  $('.payable').val(pay.toFixed(2));
+                  $('.payable').val(sum.toFixed(2));
               }
               function calc_discount(){
                   var discount = 0;
@@ -939,7 +941,7 @@ $("#qty").keypress(function(e) {
     }
 });    
     </script>     
-<!-- //Customer information monthly income
+ //Customer information monthly income
   <script type="text/javascript">
     $(document).ready(function () {
       $(document).on('select', ".customer_id", function (e) {
@@ -962,8 +964,8 @@ $("#qty").keypress(function(e) {
         });
       });
     });
-  </script>-->                
-<!--  Similar generic name After product select
+  </script>                
+  Similar generic name After product select
   <script type="text/javascript">
     $(document).ready(function () {
       $(document).on('change', ".product", function (e) {
@@ -983,9 +985,9 @@ $("#qty").keypress(function(e) {
         });
       });
     });
-  </script>-->                  
+  </script>                  
   <!--Expiry date After product select-->
-<!--  <script type="text/javascript">
+ <script type="text/javascript">
     $(document).ready(function () {
       $(document).on('change', ".product", function (e) {
         e.preventDefault(e);
@@ -1004,7 +1006,7 @@ $("#qty").keypress(function(e) {
         });
       });
     });
-  </script> -->            
+  </script>            
   <!--Expiry date After super product click-->
   <script type="text/javascript">
     $(document).ready(function () {
