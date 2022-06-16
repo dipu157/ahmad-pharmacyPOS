@@ -402,7 +402,8 @@ class Sales extends CI_Controller {
         $invoice = $this->sales_model->getSalesReportForInvoice($id);
         $invoice_details = $this->sales_model->getSalesDetailsForInvoice($id);
         $createdate = date('d/m/Y',$invoice->create_date);
-        $createtime = $invoice->sales_time;
+        $invoicetime = $invoice->sales_time;
+        $createtime = date("h:i:s A",$invoicetime);
         $customer = $invoice->c_name;
         $invoiceno = $invoice->invoice_no;
 echo " <div class='card-body pos_receipt'>
@@ -410,11 +411,12 @@ echo " <div class='card-body pos_receipt'>
           <div class='row'>
           <div class='col-md-12'>
           <p class='company-info' style='padding-bottom:5px;margin-top:-10px;'>
-            <span style='text-align:center;'><img src='http://soft.safewaypharmabd.com/assets/images/logo_greyscale.png' class='img-responsive text-center' style='width:120px;height:auto;'></span>
+            <span style='text-align:center; font-size:18px;'>Ahmad Pharma</span>
             
             <span style='text-align:center;font-size: 12px;font-weight: 600;color: #000;line-height:15px;'> $settings->address</span>
-            <span style='text-align:center;font-size: 13px;font-weight: 600;color: #000;line-height:15px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed;'>Contact: $settings->contact, 01831801494</span>
-            <span style='float:left;font-size: 13px;font-weight: 600;color: #000;line-height:15px;'>$createtime</span><span style='float:right;font-size: 13px;font-weight: 600;color: #000'>$createdate</span>
+            <span style='text-align:center;font-size: 13px;font-weight: 600;color: #000;line-height:15px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed;'>Contact: $settings->contact</span>
+            <span style='float:left;font-size: 13px;font-weight: 600;color: #000;line-height:15px;'>$createdate </span>
+            <span style='float:right;font-size: 13px;font-weight: 600;color: #000'>$createtime</span>
           </p>
           </div>
           <div class='col-md-12'>
@@ -472,7 +474,7 @@ echo " <div class='card-body pos_receipt'>
           </table>
         </div>
         <div class='receipt_footer'>
-          <span style='right;font-size: 12px;font-weight: 600;color: #000'>THANK YOU</span>
+          <span style='right;font-size: 12px;font-weight: 600;color: #000'>Thank you for Choosing us. Pls bring the receipt for change medicine.</span>
         </div>                          
       </div>";        
     }

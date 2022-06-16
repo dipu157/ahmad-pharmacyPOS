@@ -905,11 +905,12 @@ echo " <div class='card-body pos_receipt'>
           <div class='row'>
           <div class='col-md-12'>
           <p class='company-info' style='padding-bottom:5px;margin-top:-10px;'>
-            <span style='text-align:center;'><img src='http://soft.safewaypharmabd.com/assets/images/logo_greyscale.png' class='img-responsive text-center' style='width:120px;height:auto;'></span>
+            <span style='text-align:center; font-size:18px;'>Ahmad Pharma</span>
             
             <span style='text-align:center;font-size: 12px;font-weight: 600;color: #000;line-height:15px;'> $settings->address</span>
-            <span style='text-align:center;font-size: 13px;font-weight: 600;color: #000;line-height:15px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed;'>Contact: $settings->contact, 01831801494</span>
-            <span style='float:left;font-size: 13px;font-weight: 600;color: #000;line-height:15px;'>$createtime</span><span style='float:right;font-size: 13px;font-weight: 600;color: #000'>$createdate</span>
+            <span style='text-align:center;font-size: 13px;font-weight: 600;color: #000;line-height:15px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed;'>Contact: $settings->contact</span>
+            <span style='float:left;font-size: 13px;font-weight: 600;color: #000;line-height:15px;'>$createdate</span>
+            <span style='float:right;font-size: 13px;font-weight: 600;color: #000'>$createtime</span>
           </p>
           </div>
           <div class='col-md-12'>
@@ -973,7 +974,7 @@ echo " <div class='card-body pos_receipt'>
         </div>
         <div style='padding-left:25px;border-top:1px solid gray; width:38%;color:#000;'>Signature</div>
         <div class='receipt_footer'>
-          <span style='text-align:center' style='right;font-size: 15px;font-weight: 600;color: #000'>THANK YOU</span>
+          <span style='text-align:left' style='font-size: 15px; color: #000'>Thank you for Choosing us. Pls bring the receipt for change medicine.</span>
         </div>                          
       </div>";
             }

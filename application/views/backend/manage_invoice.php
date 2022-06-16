@@ -52,7 +52,9 @@
                                                 <td><?php echo $value->total_amount; ?></td>
                                                 <td><?php echo $value->paid_amount; ?></td>
                                                 <td><?php echo $value->due_amount; ?></td>
-                                                <td><a href="" title="Edit" data-toggle="modal" data-target=".bs-example-modal-md" class="btn btn-sm btn-info waves-effect waves-light invoicegenerator"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-eye"></i></a></td>
+                                                <td><a href="" title="Edit" data-toggle="modal" data-target=".bs-example-modal-md" class="btn btn-sm btn-info waves-effect waves-light invoicegenerator"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-eye"></i></a>
+                                                    <a href="" title="Print" class="btn btn-sm btn-info waves-effect waves-light invoiceprint"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-print"></i></a>
+                                                </td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -66,11 +68,11 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer"> © 2017 GenIT Bangladesh </footer>
+            <footer class="footer"> © Ahmad Pharma Bangladesh </footer>
 
         </div>
 <div id="invoicemodal" class="modal fade" role="dialog" >
-  <div class="modal-dialog" style="width: 350px;">
+  <div class="modal-dialog" style="width: 100%;">
     <!-- Modal content-->
     <div class="modal-content" id="invoicedom">
 
@@ -104,7 +106,39 @@ $( ".close" ).click(function() {
         });
       });
     });
-  </script>     
+  </script> 
+
+  <!-- Invoice print in A4 size -->
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(document).on('click', ".invoiceprint", function (e) {
+        e.preventDefault(e);
+        var sid = $(this).attr('data-id');
+        $.ajax({
+          url: '<?php echo base_url() ?>Sales/GetSalesInvoiceReport?id=' + sid,
+          method: 'GET',
+          data: 'data',
+        }).done(function (response) {
+          //console.log(response);
+          $('#invoicedom').html(response);
+          printInvoice(); 
+        });
+      });
+    });
+
+    function printInvoice(){
+        var mode = 'iframe'; //popup
+            var close = mode == "popup";
+            var options = {
+                mode: mode,
+                popClose: close
+            };
+            $("div#invoicedom").printArea(options);
+    }
+  </script> 
+
+
     <script>
     $(document).ready(function() {
 $('#mymTable').dataTable( {

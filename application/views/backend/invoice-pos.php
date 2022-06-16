@@ -69,10 +69,6 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           <input name="customer_type" value="Regular" type="radio" id="regular_customer"  tabindex="-1">
                           <label for="regular_customer">Regular Customer</label>
                         </div>
-                        <!-- <div class="col-md-3">
-                          <input name="customer_type" value="Wholesale" type="radio" id="wholesale_customer" tabindex="-1">
-                          <label for="wholesale_customer">Wholesale Customer</label>
-                        </div> -->
 
                         <div class="col-md-2" style="margin-left: -42px;">
                             <a href="<?php echo base_url();?>Customer/Create" target="_blank" class="btn btn-sm btn-info waves-effect waves-light" tabindex="-1"><b>Create New Customer</b></a>
@@ -273,11 +269,11 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                         </div>
                       </div><input type="hidden" id="cid" name="cid" value='' tabindex="-1">
                       <div class="row">
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                          
                           <button type="button" id="saleSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Sale & Invoice
                           </button>
-                        </div>
+                        </div> -->
                         <!-- <div class="col-md-3">
                           <button type="button" id="FinalSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Save
                           </button>
@@ -363,7 +359,7 @@ $( ".close" ).click(function() {
       $('#cusid').attr('tabindex',1).focus();
     </script>
   <!--Save data-->
-         <script type="text/javascript">
+     <!--     <script type="text/javascript">
         $(document).ready(function () {
         $("#FinalSubmit").on('click',function (event) {
             event.preventDefault();
@@ -398,11 +394,11 @@ $( ".close" ).click(function() {
             });
 
     });
-    </script>
+    </script> -->
   <!--Hold data-->
       
   <!--sale & invoice data-->
-         <script type="text/javascript">
+       <!--   <script type="text/javascript">
         $(document).ready(function () {
         $("#saleSubmit").on('click',function (event) {
             event.preventDefault();
@@ -436,7 +432,7 @@ $( ".close" ).click(function() {
             });
 
     });
-    </script>
+    </script> -->
   <!--sale & invoice & print data-->
 <script type="text/javascript">
         $(document).ready(function () {
@@ -468,7 +464,7 @@ $( ".close" ).click(function() {
                 window.setTimeout(function() {
                   //  location.reload();
                 }, 6000);              
-                $("#invoicemodal").modal("show"); 
+               // $("#invoicemodal").modal("show"); 
             var mode = 'iframe'; //popup
             var close = mode == "popup";
             var options = {
@@ -921,9 +917,9 @@ $("#qty").keypress(function(e) {
                   $('.gdiscount').val(discount);
               }
               $('#salesposSubmit').show();
-              $('#saleSubmit').show();
-              $('#FinalSubmit').show();
-              $('#Billhold').show();
+            //  $('#saleSubmit').show();
+            //  $('#FinalSubmit').show();
+            //  $('#Billhold').show();
               $('#qty').val("");
               $('.mrp').val("");
               $('.stock').val("");

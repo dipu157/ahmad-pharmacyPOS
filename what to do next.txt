@@ -1,12 +1,12 @@
 version 2 :
 
-1. Add Delete button to employee
 2. password and confirm password matching
-***3. in customer invoice bill details and design
-4. regular customer invoice sell problem (calculation problem)
-5. disable wholesale customer
+***3. in customer invoice bill details and design ---- ok
+4. regular customer invoice sell problem (calculation problem)---ok
+5. disable wholesale customer ----------- ok
 6. in medicine entry add a column vat
 7. Work on the report
+8. Settings save/update message
 ******* Review the whole code ******
 
 version 3:

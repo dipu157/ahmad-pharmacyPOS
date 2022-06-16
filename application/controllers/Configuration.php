@@ -27,7 +27,7 @@ class Configuration extends CI_Controller {
         if($this->session->userdata('user_login_access') != False) {
         $data['settings']   = $this->configuration_model->getAllSettings();
         $this->load->view('backend/settings',$data);
-
+        $this->session->flashdata('message');
         }
         else{
     		redirect(base_url() , 'refresh');

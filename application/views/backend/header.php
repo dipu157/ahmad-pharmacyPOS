@@ -68,7 +68,7 @@
                             <img src="<?php echo base_url(); ?>assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
                             <img src="<?php echo base_url(); ?>assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
                         </b><span>
-                         <img src="<?php echo base_url(); ?>assets/images/logo-text.png" alt="homepage" class="dark-logo" />   
+                         <img src="<?php echo base_url(); ?>assets/images/logo-text.JPG" alt="homepage" class="dark-logo" />   
                          <img src="<?php echo base_url(); ?>assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
                 </div>
                 <div class="navbar-collapse">
