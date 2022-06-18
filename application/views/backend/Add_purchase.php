@@ -58,32 +58,45 @@ $this->load->view('backend/sidebar');
                                     <thead>
                                         <tr>
                                             <th style="width:15%">Medicine  </th>
-                                            <th>G.Name</th>
                                             <th>Form</th>
                                             <th>Exp. Date</th>
                                             <th>Stock</th>
                                             <th>Qty</th>
                                             <th>TP</th>
+                                            <th>VAT</th>
                                             <th>MRP</th>
                                             <th>Disc.(%)</th>
-                                            <th>Total</th>
+                                            <th>Net Payable</th>
                                         </tr>
                                     </thead>
                                     <tbody id="addPurchaseItem">
                                     </tbody>
-                                    <tfood>
+                                    <tfoot>
+
                                     <tr>
-                                        <td class="text-right font-weight-bold" colspan=8>Grand Total:</td>
+                                        <td class="text-right font-weight-bold" colspan=9>Net Amount:</td>
+                                        <td><input type="text" class="form-control netAmnt" name="netAmount" placeholder="0.00" readonly="" value=""></td>
+                                        
+                                    </tr>
+
+                                     <tr>
+                                        <td class="text-right font-weight-bold" colspan=9>Net Discount:</td>
+                                        <td><input type="text" class="form-control netDis" name="netDiscount" placeholder="0.00" readonly="" value=""></td>
+                                        
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right font-weight-bold" colspan=9>Net Payable:</td>
                                         <td><input type="text" class="form-control gtotal" name="grandamount" placeholder="0.00" readonly="" value=""></td>
                                         
                                     </tr>
                                     <tr>
-                                        <td class="text-right font-weight-bold" colspan=8>Total Paid:</td>
+                                        <td class="text-right font-weight-bold" colspan=9>Total Paid:</td>
                                         <td><input type="text" class="form-control paid" name="paid" placeholder="0.00" value=""></td>
                                         
                                     </tr>
                                     <tr>
-                                        <td class="text-right font-weight-bold" colspan=8>Total Due:</td>
+                                        <td class="text-right font-weight-bold" colspan=9>Total Due:</td>
                                         <td><input type="text" class="form-control due" name="due" placeholder="0.00" readonly="" value=""></td>
                                         
                                     </tr>
@@ -107,7 +120,7 @@ $this->load->view('backend/sidebar');
                                         <td class="text-right" > <input type="submit" id="purchasesubmit" class="btn btn-primary btn-block" value="Review Order" style="color:white"> </td>
                                         
                                     </tr>
-                                    </tfood>
+                                    </tfoot>
                                 </table>
                             </form>
                         </div>
@@ -184,53 +197,56 @@ $this->load->view('backend/sidebar');
 
     <!--Payment cash and bank control Info-->
     <script type="text/javascript">
-    $(document).ready(function () {
-    $('#mtype').on('change', function(e) {
-    e.preventDefault(e);
-    // Get the record's ID via attribute
-    var type = $('#mtype').val();
-    console.log(type);
-    if(type =='Cheque'){
-    console.log(type);
-    $('#cheque').show();
-    $('#issuedate').show();
-    $('#bankid').show();
-    $('#rnamr').show();
-    $('#rcontact').show();
-    }
-    else if(type =='Cash'){
-    console.log(type);
-    $('#rnamr').show();
-    $('#rcontact').show();
-    $('#cheque').hide();
-    $('#issuedate').hide();
-    $('#bankid').hide();
-    }
-    });
-    $('#cheque').hide();
-    $('#issuedate').hide();
-    $('#bankid').hide();
-    });
+        $(document).ready(function () {
+        $('#mtype').on('change', function(e) {
+        e.preventDefault(e);
+        // Get the record's ID via attribute
+        var type = $('#mtype').val();
+        console.log(type);
+        if(type =='Cheque'){
+        console.log(type);
+        $('#cheque').show();
+        $('#issuedate').show();
+        $('#bankid').show();
+        $('#rnamr').show();
+        $('#rcontact').show();
+        }
+        else if(type =='Cash'){
+        console.log(type);
+        $('#rnamr').show();
+        $('#rcontact').show();
+        $('#cheque').hide();
+        $('#issuedate').hide();
+        $('#bankid').hide();
+        }
+        });
+        $('#cheque').hide();
+        $('#issuedate').hide();
+        $('#bankid').hide();
+        });
     </script>
     <script>
-    $('#purchasesubmit').hide();
-    $('#payform').hide();
+        $('#purchasesubmit').hide();
+        $('#payform').hide();
     </script>
     <!--Purchase calculation-->
     <script type="text/javascript">
     $(document).ready(function () {
-    $(document).on('keyup','.qty, .tradeprice, .total, .tdiscount, .wholesaler,.gtotal, .paid, .due',function() {
+    $(document).on('keyup','.qty, .tradeprice, .vat, .total, .tdiscount, .wholesaler,.gtotal, .netAmnt , .netDis , .paid, .due',function() {
     var discountamount = 0;
     //var total;
-    
     var gtotal = 0;
+    var netAmnt = 0;
+    var netDis = 0;
     var rows = this.closest('#purchaseForm tr');
     var quantity = $(rows).find(".qty");
     var price = $(rows).find(".tradeprice");
+    var vat = $(rows).find(".vat");
     var pdiscount = $(rows).find(".wholesaler");
     
     var qty = parseInt($(quantity).val());
     var trade = parseFloat($(price).val());
+    var vat = parseFloat($(vat).val());
     var discount = parseFloat($(pdiscount).val());
     //alert(discount);
     if(isNaN(qty) == true){
@@ -241,46 +257,64 @@ $this->load->view('backend/sidebar');
     $('#purchasesubmit').show();
     
     }
-    var total = 0;
+    var net_amount = 0;
+    var net_payable = 0;
+    var without_vat_total = 0;
     if(isNaN(qty) == true){
-    total = 0;
-    /*                 var theTotal = fnAlltotal(total);
-    console.log( "first " + total);*/
+    net_payable = 0;
+    without_vat_total = 0;
     } else {
-    total =  Math.round(qty * trade);
-    var wd_total = total;
+        if(qty > 0){
+            net_payable =  Math.round((qty * trade) + (qty * vat)) ;
+            net_amount = net_payable ;
+            without_vat_total = Math.round(qty * trade) ;
+        }    
     }
     if(isNaN(discount) == true){
-    total = wd_total;
-    /*                 var theTotal = fnAlltotal(total);
-    console.log( "first " + total);*/
+    net_payable = net_amount;
     } else {
-    total = Math.round(total - (discount * total)/100);
+        if(qty > 0){
+            net_amount = Math.round((qty * trade) + (qty * vat)) ;
+            net_payable = Math.round((without_vat_total - (discount * without_vat_total)/100) + (qty * vat ));
+            discountamount = Math.round((discount * without_vat_total)/100);
+        }
     }
-    //var discountedamount = total - discountamount;
-    // console.log(total);
-    $(rows).find('[name="total[]"]').val(total);
-    /*$(rows).find('[name="tdiscount[]"]').val(discount);*/
+    $(rows).find('[name="total[]"]').val(net_payable);
+    $(rows).find('[name="tamount[]"]').val(net_amount);
+    $(rows).find('[name="tdiscount[]"]').val(discountamount);
     var sum = 0;
     $(".total").each(function(index){
     sum += parseFloat($(this).val());
     });
-    //var discountsum = 0;
-    /*                    $(".tdiscount").each(function(index){
-    discountsum += parseFloat($(this).val());
-    });*/
+
+    var tamnt = 0;
+    $(".tamount").each(function(index){
+    tamnt += parseFloat($(this).val());
+    });
+
+    var discoun = 0;
+    $(".tdiscount").each(function(index){
+    discoun += parseFloat($(this).val());
+    });
     
     $(".gtotal").val(sum);
+    $(".netAmnt").val(tamnt);
+    $(".netDis").val(discoun);
+
     var paid = $(rows).find(".paid");
     var paidval = parseInt($(paid).val());
     var gtotal = $(rows).find(".gtotal");
+    var netAmount = $(rows).find(".netAmnt");
+    var netDiscount = $(rows).find(".netDis");
     var gtotalv = parseInt($(".gtotal").val(sum));
-    console.log(sum);
+    var netAmountv = parseInt($(".netAmnt").val(tamnt));
+    var netDiscountv = parseInt($(".netDis").val(discoun));
+    console.log(tamnt);
     var dueval = 0;
     if(isNaN(paidval) == true){
     dueval = 0;
     $('#payform').hide();
-    /*                 var theTotal = fnAlltotal(total);
+    /* var theTotal = fnAlltotal(total);
     console.log( "first " + total);*/
     } else {
     var dueval = sum - paidval;
@@ -296,42 +330,63 @@ $this->load->view('backend/sidebar');
     <!--Review form calculation-->
     <script type="text/javascript">
     $(document).ready(function () {
-        $(document).on('keyup','.qtyval, .tardepriceval, .totalval, .wholesalerval, .tdiscountval, .rpaid, .rdue',function() {
-        var discountamount = 0;
+        $(document).on('keyup','.qtyval, .tardepriceval, .totalval , .vatval , .wholesalerval, .tdiscountval, .rpaid, .rdue',function() {
+        
         //var total;
         var gtotal = 0;
+        var netAmnt = 0;
+        var netDis = 0;
         var rows = this.closest('#ReviewForm tr');
         var quantity = $(rows).find(".qtyval");
         var price = $(rows).find(".tardepriceval");
+        var vatp = $(rows).find(".vatval");
         var rev_discount = $(rows).find(".wholesalerval");
 
         var qty = parseInt($(quantity).val());
         var trade = parseFloat($(price).val());
+        var vat = parseFloat($(vatp).val());
         var discount = parseFloat($(rev_discount).val());
+
         var total = 0;
+        var netAmnt = 0;
+        var without_vat_total = 0;
+        var discountamount = 0;
+
             if(isNaN(qty) == true){
             total = 0;
+            netAmnt = 0;
+            without_vat_total = 0;
             } else {
-            total =  Math.round(qty * trade);
-            var wd_total = total;
+                if(qty > 0){
+                    total =  Math.round((qty * trade) + (qty * vat));
+                    netAmnt = total;
+                    without_vat_total = Math.round(qty * trade) ;
+                }
             }
             if(isNaN(discount) == true){
-            total = wd_total;
+            total = netAmnt;
             } else {
-            total = Math.round(total - (discount * total)/100);
+                if(qty > 0){
+                    netAmnt = Math.round((qty * trade) + (qty * vat));
+                    total = Math.round((without_vat_total - (discount * without_vat_total)/100) + (qty * vat ));
+                    discountamount = Math.round((discount * without_vat_total)/100);
+                }
             }
         
             $(rows).find('[name="totalval[]"]').val(total);
+
             var sum = 0;
             $(".totalval").each(function(index){
             sum += parseFloat($(this).val());
             });
+
             $(".gtotalval").val(Math.round(sum));
-        var rpaid = $(rows).find(".rpaid");
-        var rpaidval = parseInt($(rpaid).val());
-        var gtotal = $(rows).find(".gtotal");
-        var gtotalv = parseInt($(".gtotal").val(sum));
-        console.log(sum);
+            var rpaid = $(rows).find(".rpaid");
+            var rpaidval = parseInt($(rpaid).val());
+            var gtotal = $(rows).find(".gtotal");
+            var gtotalv = parseInt($(".gtotal").val(sum));
+            console.log(sum);
+
         var rdueval = 0;
             if(isNaN(rpaidval) == true){
             rdueval = 0;
@@ -356,45 +411,45 @@ $("tbody#addPurchaseItem").append("<tr>"+t+"</tr>");
 </script> -->
 <!--Get supplier product-->
 <script>
-$( function() {
-$(this.target).find('input').autocomplete();
-$( "#supplier_name" ).autocomplete({
-source: function( request, response ) {
-// Fetch data
-$.ajax({
-url: "<?php echo base_url() ?>purchase/GetSupplierByid",
-type: 'post',
-dataType: "json",
-data: {
-search: request.term
-},
-success: function(data) {
-response( data );
-}
-});
-},
-select: function (event, ui) {
-// Set selection
-$('#supplier_name').val(ui.item.label); // display the selected text
-$('#supplier').val(ui.item.value); // display the selected text
-$("#supplier_name").autocomplete('close');
-var iid = ui.item.value;
-console.log(iid);
-$.ajax({
-url: 'medicinebysupplierId?id=' + iid,
-method: 'GET',
-data: '',
-}).done(function (response) {
-var rows = $('table').find("#medicine");
-//console.log(response);
-$("#addPurchaseItem").html(response);
-//$(rows).html(response);
+    $( function() {
+    $(this.target).find('input').autocomplete();
+    $( "#supplier_name" ).autocomplete({
+    source: function( request, response ) {
+    // Fetch data
+    $.ajax({
+    url: "<?php echo base_url() ?>purchase/GetSupplierByid",
+    type: 'post',
+    dataType: "json",
+    data: {
+    search: request.term
+    },
+    success: function(data) {
+    response( data );
+    }
+    });
+    },
+    select: function (event, ui) {
+    // Set selection
+    $('#supplier_name').val(ui.item.label); // display the selected text
+    $('#supplier').val(ui.item.value); // display the selected text
+    $("#supplier_name").autocomplete('close');
+    var iid = ui.item.value;
+    console.log(iid);
+    $.ajax({
+    url: 'medicinebysupplierId?id=' + iid,
+    method: 'GET',
+    data: '',
+    }).done(function (response) {
+    var rows = $('table').find("#medicine");
+    //console.log(response);
+    $("#addPurchaseItem").html(response);
+    //$(rows).html(response);
 
-});
-return false;
-},
-});
-});
+    });
+    return false;
+    },
+    });
+    });
 </script>
 
 <script type="text/javascript">
@@ -420,43 +475,44 @@ console.log(response);
 $(parentTR).find('[name="strenth[]"]').val(response.medicinevalue.strength).end();
 $(parentTR).find('[name="stock[]"]').val(response.medicinevalue.instock).end();
 $(parentTR).find('[name="tradeprice[]"]').val(response.medicinevalue.trade_price).end();
+$(parentTR).find('[name="vat[]"]').val(response.medicinevalue.vat).end();
 $(parentTR).find('[name="mrp[]"]').val(response.medicinevalue.mrp).end();
                                                 });
 });
 });
 </script>
 <script type="text/javascript">
-$(document).ready(function () {
-$("#purchasesubmit").click(function (event) {
-event.preventDefault();
-var formval = $('#purchaseForm')[0];
-var data = new FormData(formval);
-$.ajax({
-type: "POST",
-enctype: 'multipart/form-data',
-url: "Purchase_Review",
-dataType: 'html',
-data: data,
-processData: false,
-contentType: false,
-cache: false,
-timeout: 600000,
-success: function(response) {
-if(response.status == 'error') {
-$(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-} else {
-/*console.log(response);*/
-$("#reviewDom").html(response);
-$("#ReviewForm").trigger("reset");
-$("#reviewmodal").modal("show");
-}
-},
-error: function(response) {
-console.error();
-}
-});
-});
-});
+    $(document).ready(function () {
+        $("#purchasesubmit").click(function (event) {
+        event.preventDefault();
+        var formval = $('#purchaseForm')[0];
+        var data = new FormData(formval);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "Purchase_Review",
+                dataType: 'html',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+            success: function(response) {
+                if(response.status == 'error') {
+                $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                } else {
+                /*console.log(response);*/
+                $("#reviewDom").html(response);
+                $("#ReviewForm").trigger("reset");
+                $("#reviewmodal").modal("show");
+                }
+                },
+            error: function(response) {
+                console.error();
+            }
+        });
+        });
+    });
 </script>
 <!-- Print and Submit-->
 <script type="text/javascript">
@@ -510,16 +566,16 @@ console.error();
                 timeout: 600000,
                     success: function(response) {
                         if(response.status == 'error') {
-                        $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                        $(".flashmessage").fadeIn('fast').delay(1000).fadeOut('fast').html(response.message);
                         console.log(response);
                         }
                         else if(response.status == 'success'){
                         alert('save successFully ');
-                        $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                        $(".flashmessage").fadeIn('fast').delay(1000).fadeOut('fast').html(response.message);
                         console.log(response);
                         window.setTimeout(function() {
                         window.location = response.curl;
-                        }, 3000);
+                        }, 1000);
                         }
                         },
                         error: function(xhr, status, error) {

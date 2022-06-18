@@ -71,6 +71,7 @@ class Medicine extends CI_Controller {
         $form               = $this->input->post('formSelect');
         $box_size           = $this->input->post('box_size');
         $trade_price        = $this->input->post('trade_price');
+        $vat                = $this->input->post('vat');
         $mrp                = $this->input->post('mrp');
         $discount           = $this->input->post('discount');
         $box_price          = $this->input->post('box_price');
@@ -107,6 +108,7 @@ class Medicine extends CI_Controller {
                     'form' => $form,
                     'box_size' => $box_size,
                     'trade_price' => $trade_price,
+                    'vat' => $vat,
                     'mrp' => $mrp,
                     'box_price'=>$box_price,
                     'side_effect'=>$side_effect,
@@ -156,8 +158,9 @@ class Medicine extends CI_Controller {
         $fa                 = $this->input->post('favourite');
         $box_size           = $this->input->post('box_size');
         $trade_price        = $this->input->post('trade_price');
+        $vat                = $this->input->post('vat');
         $mrp                = $this->input->post('mrp');
-        $discount                = $this->input->post('discount');
+        $discount           = $this->input->post('discount');
         $box_price          = $this->input->post('box_price');
         $side_effect        = $this->input->post('side_effect');
         $expire_date        = $this->input->post('expire_date');
@@ -243,6 +246,7 @@ class Medicine extends CI_Controller {
                     'form' => $form,
                     'box_size' => $box_size,
                     'trade_price' => $trade_price,
+                    'vat' => $vat,
                     'mrp' => $mrp,
                     'box_price'=>$box_price,
                     'side_effect'=>$side_effect,
@@ -284,6 +288,7 @@ class Medicine extends CI_Controller {
                     'form' => $form,
                     'box_size' => $box_size,
                     'trade_price' => $trade_price,
+                    'vat' => $vat,
                     'mrp' => $mrp,
                     'box_price'=>$box_price,
                     'side_effect'=>$side_effect,

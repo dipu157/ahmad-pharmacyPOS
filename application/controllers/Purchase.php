@@ -67,16 +67,17 @@ if ($this->session->userdata('user_login_access') != False) {
                             <input type='hidden' class='form-control medicine' id='medicine' name='medicine[]' placeholder='Ounce' readonly value='$value->product_id'>
                             <input type='text' class='form-control' placeholder='Ounce' name='mname[]' readonly value='$value->product_name.($value->strength)'>
                             </td>
-                            <td><input type='text' class='form-control' name='gname[]' placeholder='Ounce' readonly value='$value->generic_name'></td>
                             <td><input type='text' class='form-control' name='model[]' placeholder='Ounce' readonly value='$value->form'></td>
                             <td><input type='text' class='form-control datepicker' name='expiredate[]' value='$value->expire_date' id='datepicker' required></td>
                             <td><input type='text' class='form-control' name='stock[]' placeholder='0.00' readonly value='$value->instock'></td>                            
                             <td><input type='text' class='form-control qty' name='qty[]' placeholder='0.00' value='' required></td>                                                          
                             <td><input type='text' class='form-control tradeprice' name='tradeprice[]' placeholder='0.00' value='$value->trade_price'></td>
+                            <td><input type='text' class='form-control vat' name='vat[]' placeholder='0.00' value='$value->vat'></td>
                             <td><input type='text' class='form-control mrp' name='mrp[]' placeholder='0.00' value='$value->mrp'></td>
                             <td><input type='text' class='form-control wholesaler' name='wholesaler[]' placeholder='0.00' value='$value->w_discount'></td>
                             <td><input type='text' class='form-control total' name='total[]' placeholder='0.00' value='0'></td>
                             <td><input type='hidden' class='form-control tdiscount' name='tdiscount[]' placeholder='0.00'  value='0'></td>
+                            <td><input type='hidden' class='form-control tamount' name='tamount[]' placeholder='0.00'  value='0'></td>
                     </tr>";
             }
         } else {
@@ -114,8 +115,10 @@ if ($this->session->userdata('user_login_access') != False) {
         $rname    =   $this->input->post('rname');
         $rcontact    =   $this->input->post('rcontact');
         $paydate    =   $this->input->post('paydate');
-        /*$tdiscount  =   round($this->input->post('tdiscount'));*/
+        $tdiscount  =   round($this->input->post('tdiscount'));
         $grandamount =  round($this->input->post('grandamount'));
+        $netamount =  round($this->input->post('netAmount'));
+        $netdiscount =  round($this->input->post('netDiscount'));
         $paid =  round($this->input->post('paid'));
         $due =  round($this->input->post('due'));
         $invoiceid    = $this->purchase_model->GePurchaseInvoice($invoice);
@@ -166,15 +169,14 @@ if ($this->session->userdata('user_login_access') != False) {
                     <thead>
                         <tr>
                             <th style='width: 144px;'>Medicine Name </th>
-                            <th>G.Name</th>
                             <th>Form</th>
                             <th>Expiry Date</th>
                             <th>Quantity</th>
                             <th>Trade Price</th>
+                            <th>VAT</th>
                             <th>M.R.P.</th>
-                            <th>W.Discount</th>
-                            <th>Total Amount</th>
-                            <th>Barcode(Qty)</th>
+                            <th>Discount(%)</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody id='addPurchaseItem'>";            
@@ -182,38 +184,51 @@ if ($this->session->userdata('user_login_access') != False) {
                 foreach($_POST['qty'] as $row=>$name){
                 if(!empty($_POST['qty'][$row])){
                 $medicine   =   $_POST['medicine'][$row];
-                $mname   =   $_POST['mname'][$row];
+                $mname      =   $_POST['mname'][$row];
                 $qty        =   $_POST['qty'][$row];
-                $modal   =   $_POST['model'][$row];
+                $modal      =   $_POST['model'][$row];
                 $instock    =   $_POST['stock'][$row];
                 $tradeprice =   $_POST['tradeprice'][$row];
+                $vat        =   $_POST['vat'][$row];
                 $mrp        =   $_POST['mrp'][$row];
                 $wholesaller=   $_POST['wholesaler'][$row];
                 /*$discount   =   $_POST['discount'][$row];*/
-                $total      =   $_POST['total'][$row];
+                $total      =   $_POST['total'][$row];                
                 $expire     =   $_POST['expiredate'][$row];
-                $gname     =   $_POST['gname'][$row];
                 $medicineval    = $this->medicine_model->getMedicineBymedicineId($medicine);    
                 echo "<tr>
                             <td><input type='hidden' class='form-control medicine' id='medicine' name='medicine[]' placeholder='Ounce' readonly value='$medicine'>
                             <input type='text' class='form-control' placeholder='Ounce' readonly value='$mname'>
                             </td>
-                            <td><input type='text' class='form-control' name='gname[]' placeholder='Ounce' readonly value='$gname'></td>
                             <td><input type='text' class='form-control' name='modal[]' placeholder='Ounce' readonly value='$modal'></td>
                             <td><input type='text' class='form-control datepicker' name='expiredate[]' value='$expire' id='datepicker' required>
                             <input type='hidden' class='form-control' name='stock[]' placeholder='0.00' readonly value='$instock' >
                             </td>                            
                             <td><input type='text' class='form-control qtyval' name='qty[]' placeholder='0.00' value='$qty' autocomplete='off' required></td>                                                          
                             <td><input type='text' class='form-control tardepriceval' name='tradeprice[]' placeholder='0.00' value='$tradeprice'></td>
+                            <td><input type='text' class='form-control vatval' name='vat[]' placeholder='0.00' value='$vat'></td>
                             <td><input type='text' class='form-control mrpval' name='mrp[]' placeholder='0.00' value='$mrp'></td>
                             <td><input type='text' class='form-control wholesalerval' name='wholesaler[]' placeholder='0.00' value='$wholesaller' required></td>
                             <td><input type='text' class='form-control totalval' name='totalval[]' placeholder='0.00' value='$total'></td>
-                            <td><input type='text' class='form-control' name='barqty[]' placeholder='0.00' value='' autocomplete='off' required></td>
                     </tr>";
                     }
                 } 
             echo "</tbody>
                         <tfood>
+                            <tr>
+                                    
+                                    <td class='text-right font-weight-bold' colspan=8>Net Amount:</td>
+                                    <td><input type='text' class='form-control netAmount' name='netAmount' placeholder='0.00' readonly value='$netamount'></td>
+                                    <td></td>
+                            </tr>
+
+                            <tr>
+                                    
+                                    <td class='text-right font-weight-bold' colspan=8>Net Discount:</td>
+                                    <td><input type='text' class='form-control netDiscount' name='netDiscount' placeholder='0.00' readonly value='$netdiscount'></td>
+                                    <td></td>
+                            </tr>
+
                             <tr>
                                     
                                     <td class='text-right font-weight-bold' colspan=8>Grand Total:</td>
@@ -280,8 +295,10 @@ if ($this->session->userdata('user_login_access') != False) {
         $rname    =   $this->input->post('rname');
         $rcontact    =   $this->input->post('rcontact');
         $paydate    =   $this->input->post('paydate');
-        /*$tdiscount  =   round($this->input->post('tdiscount'));*/
+        $tdiscount  =   round($this->input->post('tdiscount'));
         $grandamount =  round($this->input->post('grandamount'));
+        $netamount =  round($this->input->post('netAmount'));
+        $netdiscount =  round($this->input->post('netDiscount'));
         $paid =  round($this->input->post('paid'));
         $duev =  round(abs($this->input->post('due')));       
         $this->load->library('form_validation');
@@ -306,8 +323,9 @@ if ($this->session->userdata('user_login_access') != False) {
                     'invoice_no' => $invoice,
                     'pur_date' => $entrydate,
                     'pur_details' => $details,
-                    /*'total_discount' => $tdiscount,*/
-                    'gtotal_amount' => $grandamount,
+                    'total_discount' => $tdiscount,
+                    'net_payable' => $grandamount,
+                    'net_amount' => $netamount,
                     'entry_date' => $date,
                     'entry_id' => $entryid
                 ); 
@@ -358,9 +376,10 @@ if ($this->session->userdata('user_login_access') != False) {
                     $medicine   =   $_POST['medicine'][$row];
                     $qty        =   $_POST['qty'][$row];
                     $tradeprice =   $_POST['tradeprice'][$row];
+                    $vat        =   $_POST['vat'][$row];
                     $mrp        =   $_POST['mrp'][$row];
                     /*$discount   =   $_POST['discount'][$row];*/
-                    $total      =   $_POST['totalval'][$row];
+                    $total =   $_POST['netpay'][$row];
                     $expire     =   strtotime($_POST['expiredate'][$row]);                    
                         $data = array(
                             'pur_id'   =>  $purid,
@@ -434,8 +453,9 @@ if ($this->session->userdata('user_login_access') != False) {
         $rname    =   $this->input->post('rname');
         $rcontact    =   $this->input->post('rcontact');
         $paydate    =   $this->input->post('paydate');
-        /*$tdiscount  =   round($this->input->post('tdiscount'));*/
+        $tdiscount  =   round($this->input->post('netDiscount'));
         $grandamount =  round($this->input->post('grandamount'));
+        $netamount =  round($this->input->post('netAmount'));
         $paid =  round($this->input->post('paid'));
         $duev =  round(abs($this->input->post('due')));         
         $this->load->library('form_validation');
@@ -472,8 +492,9 @@ if ($this->session->userdata('user_login_access') != False) {
                     'invoice_no' => $invoice,
                     'pur_date' => $entrydate,
                     'pur_details' => $details,
-                    /*'total_discount' => $tdiscount,*/
-                    'gtotal_amount' => $grandamount,
+                    'total_discount' => $tdiscount,
+                    'total_amount' => $netamount,
+                    'net_payable' => $grandamount,
                     'entry_date' => $date,
                     'entry_id' => $entryid
                 ); 
@@ -521,9 +542,10 @@ if ($this->session->userdata('user_login_access') != False) {
                 $medicine   =   $_POST['medicine'][$row];
                 $qty        =   $_POST['qty'][$row];
                 $tradeprice =   $_POST['tradeprice'][$row];
+                $vat        =   $_POST['vat'][$row];
                 $mrp        =   $_POST['mrp'][$row];
                 /*$discount   =   $_POST['discount'][$row];*/
-                $total      =   $_POST['totalval'][$row];
+                $total      =   $_POST['netpay'][$row];
                 $expire     =   strtotime($_POST['expiredate'][$row]);                    
                     $data = array(
                         'pur_id'   =>  $purid,
@@ -607,10 +629,11 @@ if ($this->session->userdata('user_login_access') != False) {
                                         $qty        =   $_POST['qty'][$row];
                                         $mrp        =   $_POST['mrp'][$row];
                                         $tradeprice =   $_POST['tradeprice'][$row];    
+                                        $vat        =   $_POST['vat'][$row];    
                                         $wholesaller=   $_POST['wholesaler'][$row];
                                         $expire     =   $_POST['expiredate'][$row];
                                         /*$discount   =   $_POST['discount'][$row];*/
-                                        $total      =   $_POST['totalval'][$row];    
+                                        $total      =   $_POST['netpay'][$row];    
                                         //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
                                         //$instock = $medicinestock->instock + $qty;
                                         $medicinestock = $this->purchase_model->getmedicineByMId($medicine);

@@ -4,7 +4,7 @@ version 2 :
 ***3. in customer invoice bill details and design ---- ok
 4. regular customer invoice sell problem (calculation problem)---ok
 5. disable wholesale customer ----------- ok
-6. in medicine entry add a column vat
+6. in medicine entry add a column vat ----------- ok
 7. Work on the report
 8. Settings save/update message
 ******* Review the whole code ******

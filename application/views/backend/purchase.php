@@ -50,7 +50,7 @@
                                                 <td><a href="Purchase_History?H=<?php echo base64_encode($value->p_id) ?>"><?php echo $value->invoice_no ?></a></td>
                                                 <td><?php echo date('d/M/Y',$value->pur_date) ?></td>
                                                 <td><?php echo substr($value->pur_details,0,22).'...' ?></td>
-                                                <td><?php echo $value->gtotal_amount ?></td>
+                                                <td><?php echo $value->net_payable ?></td>
                                                 <td class="jsgrid-align-center ">
                                                    <a href="" title="Print Invoice" class="btn btn-sm btn-info waves-effect waves-light invoId" data-id="<?php echo $value->p_id; ?>"><i class="fa fa-history"></i></a> 
                                                 </td>

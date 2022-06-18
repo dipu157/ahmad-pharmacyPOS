@@ -263,6 +263,22 @@
 
                                                 <div class="form-group row">
 
+                                                    <label class="control-label text-right col-md-3">VAT</label>
+
+                                                    <div class="col-md-9">
+
+                                                        <input type="text" name="vat" class="form-control" placeholder="VAT" required>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group row">
+
                                                     <label class="control-label text-right col-md-3">M.R.P.</label>
 
                                                     <div class="col-md-9">
@@ -447,6 +463,7 @@
                             $('#medicinefORM').find('[name="box_size"]').val(response.mvalue.box_size).end();
                             $('#medicinefORM').find('[name="expire_date"]').val(response.mvalue.expire_date).end();
                             $('#medicinefORM').find('[name="trade_price"]').val(response.mvalue.trade_price).end();
+                            $('#medicinefORM').find('[name="vat"]').val(response.mvalue.vat).end();
                             $('#medicinefORM').find('[name="mrp"]').val(response.mvalue.mrp).end();
                             $('#medicinefORM').find('[name="box_price"]').val(response.mvalue.box_price).end();
                             $('#medicinefORM').find('[name="side_effect"]').val(response.mvalue.side_effect).end();

@@ -119,11 +119,27 @@
 
                                                 <div class="form-group row">
 
-                                                    <label class="control-label text-right col-md-3 col-sm-12">Trade Price with VAT</label>
+                                                    <label class="control-label text-right col-md-3 col-sm-12">Trade Price</label>
 
                                                     <div class="col-md-9 col-sm-12">
 
-                                                        <input type="number" name="trade_price" class="form-control trade_price" placeholder="Trade Price with VAT" required>
+                                                        <input type="number" name="trade_price" class="form-control trade_price" placeholder="Trade Price" required>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-12">
+
+                                                <div class="form-group row">
+
+                                                    <label class="control-label text-right col-md-3 col-sm-12">VAT</label>
+
+                                                    <div class="col-md-9 col-sm-12">
+
+                                                        <input type="number" name="vat" class="form-control vat" placeholder="VAT">
 
                                                     </div>
 
@@ -252,7 +268,7 @@
 
             </div>           
 
-            <footer class="footer"> © 2017 GenIT Bangladesh </footer>
+            <footer class="footer"> © Ahmad Pharma Bangladesh </footer>
 
         </div>    
 <script>
@@ -308,14 +324,14 @@ $(this.target).find('input').autocomplete();
 
                       if(response.status == 'error') { 
 
-                      $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                      $(".flashmessage").fadeIn('fast').delay(1000).fadeOut('fast').html(response.message);
                           console.log(response);
 
                       } else if(response.status == 'success') {
 
                         alert("Medicine Add Successfully");
                         
-                          $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
+                          $(".flashmessage").fadeIn('fast').delay(1000).fadeOut('fast').html(response.message);
                           console.log(response);
                         window.setTimeout(function() {
                             window.location = response.curl;
