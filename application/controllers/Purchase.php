@@ -192,7 +192,6 @@ if ($this->session->userdata('user_login_access') != False) {
                 $vat        =   $_POST['vat'][$row];
                 $mrp        =   $_POST['mrp'][$row];
                 $wholesaller=   $_POST['wholesaler'][$row];
-                /*$discount   =   $_POST['discount'][$row];*/
                 $total      =   $_POST['total'][$row];                
                 $expire     =   $_POST['expiredate'][$row];
                 $medicineval    = $this->medicine_model->getMedicineBymedicineId($medicine);    
@@ -275,163 +274,162 @@ if ($this->session->userdata('user_login_access') != False) {
             </table>";
         }
     }
-    public function Save_Purchase(){
-        $purid      =   'P'.rand(2000,10000000);
-        $supplier   =   $this->input->post('supplier');
-        $invoice    =   $this->input->post('invoice');
-        $entrydate  =   strtotime($this->input->post('entrydate'));
-        $details    =   $this->input->post('details');
-        date_default_timezone_set("Asia/Dhaka");
-        $date       =   strtotime(date('m/d/Y'));
-        $mtype    =   $this->input->post('mtype');
-        $bankid    =   $this->input->post('bankid');
-        $entryid = $this->session->userdata('user_login_id');
-        if(!empty($bankid)){
-         $bankname = $this->purchase_model->GetBankName($bankid);
-        }
-        $bankinfo = $this->user_model->Getbankinfowithsupplier();
-        $cheque    =   $this->input->post('cheque');
-        $issuedate    =   $this->input->post('issuedate');
-        $rname    =   $this->input->post('rname');
-        $rcontact    =   $this->input->post('rcontact');
-        $paydate    =   $this->input->post('paydate');
-        $tdiscount  =   round($this->input->post('tdiscount'));
-        $grandamount =  round($this->input->post('grandamount'));
-        $netamount =  round($this->input->post('netAmount'));
-        $netdiscount =  round($this->input->post('netDiscount'));
-        $paid =  round($this->input->post('paid'));
-        $duev =  round(abs($this->input->post('due')));       
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters();
-        $this->form_validation->set_rules('supplier', 'Supplier', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('qty[]', 'Quantity', 'trim|xss_clean');
-        $this->form_validation->set_rules('invoice', 'Invoice', 'trim|required|xss_clean');
-        $checksameinvoice = $this->purchase_model->GePurchaseInvoice($invoice);
-        if(!empty($checksameinvoice)){
-            echo "This Invoice is Already exist";
-            die();
-        }
-        if($this->form_validation->run() == FALSE){
-		    $response['status'] = 'error';
-            $response['message'] = validation_errors();
-            $this->output->set_output(json_encode($response));
-        } else {
-                $data = array();
-                $data = array(
-                    'p_id' => $purid,
-                    'sid' => $supplier,
-                    'invoice_no' => $invoice,
-                    'pur_date' => $entrydate,
-                    'pur_details' => $details,
-                    'total_discount' => $tdiscount,
-                    'net_payable' => $grandamount,
-                    'net_amount' => $netamount,
-                    'entry_date' => $date,
-                    'entry_id' => $entryid
-                ); 
-            $success = $this->purchase_model->Save_Purchase($data);
-            if($this->db->affected_rows()){
+    // public function Save_Purchase(){
+    //     $purid      =   'P'.rand(2000,10000000);
+    //     $supplier   =   $this->input->post('supplier');
+    //     $invoice    =   $this->input->post('invoice');
+    //     $entrydate  =   strtotime($this->input->post('entrydate'));
+    //     $details    =   $this->input->post('details');
+    //     date_default_timezone_set("Asia/Dhaka");
+    //     $date       =   strtotime(date('m/d/Y'));
+    //     $mtype    =   $this->input->post('mtype');
+    //     $bankid    =   $this->input->post('bankid');
+    //     $entryid = $this->session->userdata('user_login_id');
+    //     if(!empty($bankid)){
+    //      $bankname = $this->purchase_model->GetBankName($bankid);
+    //     }
+    //     $bankinfo = $this->user_model->Getbankinfowithsupplier();
+    //     $cheque    =   $this->input->post('cheque');
+    //     $issuedate    =   $this->input->post('issuedate');
+    //     $rname    =   $this->input->post('rname');
+    //     $rcontact    =   $this->input->post('rcontact');
+    //     $paydate    =   $this->input->post('paydate');
+    //     $grandamount =  round($this->input->post('grandamount'));
+    //     $netamount =  round($this->input->post('netAmount'));
+    //     $netdiscount =  round($this->input->post('netDiscount'));
+    //     $paid =  round($this->input->post('paid'));
+    //     $duev =  round(abs($this->input->post('due')));       
+    //     $this->load->library('form_validation');
+    //     $this->form_validation->set_error_delimiters();
+    //     $this->form_validation->set_rules('supplier', 'Supplier', 'trim|required|xss_clean');
+    //     $this->form_validation->set_rules('qty[]', 'Quantity', 'trim|xss_clean');
+    //     $this->form_validation->set_rules('invoice', 'Invoice', 'trim|required|xss_clean');
+    //     $checksameinvoice = $this->purchase_model->GePurchaseInvoice($invoice);
+    //     if(!empty($checksameinvoice)){
+    //         echo "This Invoice is Already exist";
+    //         die();
+    //     }
+    //     if($this->form_validation->run() == FALSE){
+		  //   $response['status'] = 'error';
+    //         $response['message'] = validation_errors();
+    //         $this->output->set_output(json_encode($response));
+    //     } else {
+    //             $data = array();
+    //             $data = array(
+    //                 'p_id' => $purid,
+    //                 'sid' => $supplier,
+    //                 'invoice_no' => $invoice,
+    //                 'pur_date' => $entrydate,
+    //                 'pur_details' => $details,
+    //                 'total_discount' => $netdiscount,
+    //                 'net_payable' => $grandamount,
+    //                 'total_amount' => $netamount,
+    //                 'entry_date' => $date,
+    //                 'entry_id' => $entryid
+    //             ); 
+    //         $success = $this->purchase_model->Save_Purchase($data);
+    //         if($this->db->affected_rows()){
                 
-                $supplierbalance = $this->supplier_model->Getsupplierbalance($supplier);
-                $total = $supplierbalance->total_amount + $grandamount; 
-                $due = $supplierbalance->total_due + $duev;
-                $paids = $supplierbalance->total_paid + $paid;
+    //             $supplierbalance = $this->supplier_model->Getsupplierbalance($supplier);
+    //             $total = $supplierbalance->total_amount + $grandamount; 
+    //             $due = $supplierbalance->total_due + $duev;
+    //             $paids = $supplierbalance->total_paid + $paid;
 
-                $data = array();
-                $data = array(
-                    'total_amount' => $total,
-                    'total_paid' => $paids,
-                    'total_due' => $due
-                );
-                $success = $this->supplier_model->update_Supplier_balance($supplier,$data); 
+    //             $data = array();
+    //             $data = array(
+    //                 'total_amount' => $total,
+    //                 'total_paid' => $paids,
+    //                 'total_due' => $due
+    //             );
+    //             $success = $this->supplier_model->update_Supplier_balance($supplier,$data); 
 
-                $data = array();
-                $data = array(
-                    'supp_id' => $supplier,
-                    'pur_id' => $purid,
-                    'type' => $mtype,
-                    'bank_id' => $bankid,
-                    'cheque_no' => $cheque,
-                    'issue_date' => $issuedate,
-                    'receiver_name' => $rname,
-                    'receiver_contact' => $rcontact,
-                    'date' => $paydate,
-                    'paid_amount' => $paid
-                );
-                $success = $this->purchase_model->Insert_Supplier_amount($data);
+    //             $data = array();
+    //             $data = array(
+    //                 'supp_id' => $supplier,
+    //                 'pur_id' => $purid,
+    //                 'type' => $mtype,
+    //                 'bank_id' => $bankid,
+    //                 'cheque_no' => $cheque,
+    //                 'issue_date' => $issuedate,
+    //                 'receiver_name' => $rname,
+    //                 'receiver_contact' => $rcontact,
+    //                 'date' => $paydate,
+    //                 'paid_amount' => $paid
+    //             );
+    //             $success = $this->purchase_model->Insert_Supplier_amount($data);
 
-                $data = array();
-                $data = array(
-                    'supplier_id' => $supplier,
-                    'pur_id' => $purid,
-                    'date' => $paydate,
-                    'total_amount' => $grandamount,
-                    'paid_amount' => $paid,
-                    'due_amount' => $duev
-                );
-                $success = $this->purchase_model->Insert_Supplier_PayHistory($data);  
+    //             $data = array();
+    //             $data = array(
+    //                 'supplier_id' => $supplier,
+    //                 'pur_id' => $purid,
+    //                 'date' => $paydate,
+    //                 'total_amount' => $grandamount,
+    //                 'paid_amount' => $paid,
+    //                 'due_amount' => $duev
+    //             );
+    //             $success = $this->purchase_model->Insert_Supplier_PayHistory($data);  
 
-                foreach($_POST['qty'] as $row=>$name){
-                    if(!empty($_POST['qty'][$row])){
-                    $medicine   =   $_POST['medicine'][$row];
-                    $qty        =   $_POST['qty'][$row];
-                    $tradeprice =   $_POST['tradeprice'][$row];
-                    $vat        =   $_POST['vat'][$row];
-                    $mrp        =   $_POST['mrp'][$row];
-                    /*$discount   =   $_POST['discount'][$row];*/
-                    $total =   $_POST['netpay'][$row];
-                    $expire     =   strtotime($_POST['expiredate'][$row]);                    
-                        $data = array(
-                            'pur_id'   =>  $purid,
-                            'mid'      =>  $medicine,
-                            'supp_id'      =>$supplier,
-                            'qty'      =>  $qty,
-                            'supplier_price'=>$tradeprice,
-                            /*'discount'   =>  $discount,*/
-                            'expire_date'   =>  $expire,
-                            'total_amount'  =>  $total
-                        );
-                    $success = $this->purchase_model->Save_Purchase_History($data);
-                        }
-                }                
-                foreach($_POST['qty'] as $row=>$name){
-                    if(!empty($_POST['qty'][$row])){
-                    $medicine   =   $_POST['medicine'][$row];
-                    $qty        =   $_POST['qty'][$row];
-                    $mrp        =   $_POST['mrp'][$row];
-                    $wholesaller=   $_POST['wholesaler'][$row];
-                    $expire     =   $_POST['expiredate'][$row];     
-                    //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
-                    //$instock = $medicinestock->instock + $qty;
-                    $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
-                    $instock = $medicinestock->instock + $qty;
-                        if(empty($wholesaller)){
-                            $wholesaller = 0; 
-                        }else{
-                            $wholesaller = $medicinestock->w_discount;
-                        }
+    //             foreach($_POST['qty'] as $row=>$name){
+    //                 if(!empty($_POST['qty'][$row])){
+    //                 $medicine   =   $_POST['medicine'][$row];
+    //                 $qty        =   $_POST['qty'][$row];
+    //                 $tradeprice =   $_POST['tradeprice'][$row];
+    //                 $vat        =   $_POST['vat'][$row];
+    //                 $mrp        =   $_POST['mrp'][$row];
+    //                 // $discount   =   $_POST['discount'][$row];
+    //                 $total =   $_POST['total'][$row];
+    //                 $expire     = strtotime($_POST['expiredate'][$row]);                    
+    //                     $data = array(
+    //                         'pur_id'   =>  $purid,
+    //                         'mid'      =>  $medicine,
+    //                         'supp_id'      =>$supplier,
+    //                         'qty'      =>  $qty,
+    //                         'supplier_price'=>$tradeprice,
+    //                         /*'discount'   =>  $discount,*/
+    //                         'expire_date'   =>  $expire,
+    //                         'total_amount'  =>  $total
+    //                     );
+    //                 $success = $this->purchase_model->Save_Purchase_History($data);
+    //                     }
+    //             }                
+    //             foreach($_POST['qty'] as $row=>$name){
+    //                 if(!empty($_POST['qty'][$row])){
+    //                 $medicine   =   $_POST['medicine'][$row];
+    //                 $qty        =   $_POST['qty'][$row];
+    //                 $mrp        =   $_POST['mrp'][$row];
+    //                 $wholesaller=   $_POST['wholesaler'][$row];
+    //                 $expire     =   $_POST['expiredate'][$row];     
+    //                 //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
+    //                 //$instock = $medicinestock->instock + $qty;
+    //                 $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
+    //                 $instock = $medicinestock->instock + $qty;
+    //                     if(empty($wholesaller)){
+    //                         $wholesaller = 0; 
+    //                     }else{
+    //                         $wholesaller = $medicinestock->w_discount;
+    //                     }
                        
-                        $data = array(
-                            'product_id'   =>  $medicine,
-                            'instock'      =>  $instock,
-                            'mrp'           =>  $mrp,
-                            'w_discount'    =>  $wholesaller,
-                            'expire_date'   =>  $expire
-                        );
-                    $success = $this->purchase_model->Update_Medicine($medicine,$data);
-                    }
+    //                     $data = array(
+    //                         'product_id'   =>  $medicine,
+    //                         'instock'      =>  $instock,
+    //                         'mrp'           =>  $mrp,
+    //                         'w_discount'    =>  $wholesaller,
+    //                         'expire_date'   =>  $expire
+    //                     );
+    //                 $success = $this->purchase_model->Update_Medicine($medicine,$data);
+    //                 }
                    
-                }
-                $response['status'] = 'success';
-                $response['message'] = "Successfully Added";
-                $response['curl'] = base_url()."Purchase/Create";
-                $this->output->set_output(json_encode($response)); 
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = "Something Wrong";
-            }
-        }
-    }
+    //             }
+    //             $response['status'] = 'success';
+    //             $response['message'] = "Successfully Added";
+    //             $response['curl'] = base_url()."Purchase/Create";
+    //             $this->output->set_output(json_encode($response)); 
+    //         } else {
+    //             $response['status'] = 'error';
+    //             $response['message'] = "Something Wrong";
+    //         }
+    //     }
+    // }
     public function Save_Purchase_Invoice(){
         $purid      =   'P'.rand(2000,10000000);
         $supplier   =   $this->input->post('supplier');
@@ -499,6 +497,11 @@ if ($this->session->userdata('user_login_access') != False) {
                     'entry_id' => $entryid
                 ); 
             $success = $this->purchase_model->Save_Purchase($data);
+
+
+            if($this->db->affected_rows()){
+
+
                 $data = array();
                 $data = array(
                     'supp_id' => $supplier,
@@ -522,21 +525,8 @@ if ($this->session->userdata('user_login_access') != False) {
                     'paid_amount' => $paid,
                     'due_amount' => $duev
                 );
-                $success = $this->purchase_model->Insert_Supplier_PayHistory($data);             
-            if($this->db->affected_rows()){
-                /*Root Accounts Start*/
-                // $account = $this->user_model->GetAccountBalance();
-                // if($account != null){
-                //     $id = $account->id;
-                //     $amount = $account->amount - $paid;
-                //         $data = array(
-                //             'amount' =>  $amount
-                //         );
-                //     $success = $this->user_model->UPDATE_ACCOUNT($id,$data); 
-                // }
-
-                
-                /*Root Accounts end*/                
+                $success = $this->purchase_model->Insert_Supplier_PayHistory($data);
+               
                 foreach($_POST['qty'] as $row=>$name){
                     if(!empty($_POST['qty'][$row])){
                 $medicine   =   $_POST['medicine'][$row];
@@ -544,22 +534,23 @@ if ($this->session->userdata('user_login_access') != False) {
                 $tradeprice =   $_POST['tradeprice'][$row];
                 $vat        =   $_POST['vat'][$row];
                 $mrp        =   $_POST['mrp'][$row];
-                /*$discount   =   $_POST['discount'][$row];*/
-                $total      =   $_POST['netpay'][$row];
-                $expire     =   strtotime($_POST['expiredate'][$row]);                    
+               // $discount   =   $_POST['discount'][$row];
+                $total      =   $_POST['totalval'][$row];
+                $expire     =   strtotime($_POST['expiredate'][$row]);  
+
                     $data = array(
                         'pur_id'   =>  $purid,
                         'mid'      =>  $medicine,
                         'supp_id'      =>$supplier,
                         'qty'      =>  $qty,
                         'supplier_price'=>$tradeprice,
-                        /*'discount'   =>  $discount,*/
+                       // 'discount'   =>  $discount,
                         'expire_date'   =>  $expire,
                         'total_amount'  =>  $total
                     );
                 $success = $this->purchase_model->Save_Purchase_History($data);
                     }
-                }                
+                }   
                 foreach($_POST['qty'] as $row=>$name){
                 if(!empty($_POST['qty'][$row])){
                 $medicine   =   $_POST['medicine'][$row];
@@ -632,8 +623,8 @@ if ($this->session->userdata('user_login_access') != False) {
                                         $vat        =   $_POST['vat'][$row];    
                                         $wholesaller=   $_POST['wholesaler'][$row];
                                         $expire     =   $_POST['expiredate'][$row];
-                                        /*$discount   =   $_POST['discount'][$row];*/
-                                        $total      =   $_POST['netpay'][$row];    
+                                        // $discount   =   $_POST['discount'][$row];
+                                        $total      =   $_POST['totalval'][$row];    
                                         //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
                                         //$instock = $medicinestock->instock + $qty;
                                         $medicinestock = $this->purchase_model->getmedicineByMId($medicine);

@@ -52,8 +52,11 @@
                                                 <td><?php echo $value->total_amount; ?></td>
                                                 <td><?php echo $value->paid_amount; ?></td>
                                                 <td><?php echo $value->due_amount; ?></td>
-                                                <td><a href="" title="Edit" data-toggle="modal" data-target=".bs-example-modal-md" class="btn btn-sm btn-info waves-effect waves-light invoicegenerator"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-eye"></i></a>
+                                                <td>
+                                                    <a href="" title="Edit" data-toggle="modal" data-target=".bs-example-modal-md" class="btn btn-sm btn-info waves-effect waves-light invoicegenerator"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-eye"></i></a>
+
                                                     <a href="" title="Print" class="btn btn-sm btn-info waves-effect waves-light invoiceprint"  data-id="<?php echo $value->sale_id; ?>"><i class="fa fa-print"></i></a>
+                                                    
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>

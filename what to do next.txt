@@ -1,7 +1,7 @@
 version 2 :
 
 2. password and confirm password matching
-***3. in customer invoice bill details and design ---- ok
+***3. in customer invoice bill details and design
 4. regular customer invoice sell problem (calculation problem)---ok
 5. disable wholesale customer ----------- ok
 6. in medicine entry add a column vat ----------- ok

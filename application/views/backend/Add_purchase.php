@@ -547,7 +547,7 @@ $(parentTR).find('[name="mrp[]"]').val(response.medicinevalue.mrp).end();
         });
     });
 </script>
-
+<!-- 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#FinalSubmit").on('click',function (event) {
@@ -590,7 +590,7 @@ $(parentTR).find('[name="mrp[]"]').val(response.medicinevalue.mrp).end();
             });
         });
     });
-</script>
+</script> -->
 <footer class="footer"> © Ahmad Pharma Bangladesh </footer>
 </div>
 <?php

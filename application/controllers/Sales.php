@@ -452,25 +452,26 @@ echo " <div class='card-body pos_receipt'>
                 endforeach;
           echo "</tbody>
           
-          
-            <tr>
+            <tr style='margin-top:20px;'>
             <td></td>
             <td></td>
-              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Net Due</td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'> $invoice->due_amount tk.</td>
+              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Net Payable (After Disc.):</td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$invoice->total_amount tk.</td>
             </tr>
             <tr>
             <td></td>
             <td></td>
-              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Paid</td>
+              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Paid :</td>
               <td style='right;font-size: 12px;font-weight: 600;color: #000'>$invoice->paid_amount tk.</td>
             </tr>
             <tr>
             <td></td>
             <td></td>
-              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Total Amount</td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$invoice->total_amount tk.</td>
+              <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Net Due :</td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'> $invoice->due_amount tk.</td>
             </tr>
+            
+            
           </table>
         </div>
         <div class='receipt_footer'>
