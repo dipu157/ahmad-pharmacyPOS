@@ -265,18 +265,23 @@ $this->load->view('backend/sidebar');
     without_vat_total = 0;
     } else {
         if(qty > 0){
-            net_payable =  Math.round((qty * trade) + (qty * vat)) ;
+            net_payable =  (qty * trade) + (qty * vat) ;
+            net_payable = parseFloat(net_payable).toFixed(2);
             net_amount = net_payable ;
-            without_vat_total = Math.round(qty * trade) ;
+            without_vat_total = qty * trade ;
+            without_vat_total = parseFloat(without_vat_total).toFixed(2);
         }    
     }
     if(isNaN(discount) == true){
     net_payable = net_amount;
     } else {
         if(qty > 0){
-            net_amount = Math.round((qty * trade) + (qty * vat)) ;
-            net_payable = Math.round((without_vat_total - (discount * without_vat_total)/100) + (qty * vat ));
-            discountamount = Math.round((discount * without_vat_total)/100);
+            net_amount = (qty * trade) + (qty * vat) ;
+            net_amount = parseFloat(net_amount).toFixed(2);
+            net_payable = (without_vat_total - (discount * without_vat_total)/100) + (qty * vat );
+            net_payable = parseFloat(net_payable).toFixed(2);
+            discountamount = (discount * without_vat_total)/100;
+            discountamount = parseFloat(discountamount).toFixed(2);
         }
     }
     $(rows).find('[name="total[]"]').val(net_payable);
@@ -359,17 +364,22 @@ $this->load->view('backend/sidebar');
             } else {
                 if(qty > 0){
                     total =  Math.round((qty * trade) + (qty * vat));
+                    total = parseFloat(total).toFixed(2);
                     netAmnt = total;
-                    without_vat_total = Math.round(qty * trade) ;
+                    without_vat_total = qty * trade ;
+                    without_vat_total = parseFloat(without_vat_total).toFixed(2);
                 }
             }
             if(isNaN(discount) == true){
             total = netAmnt;
             } else {
                 if(qty > 0){
-                    netAmnt = Math.round((qty * trade) + (qty * vat));
-                    total = Math.round((without_vat_total - (discount * without_vat_total)/100) + (qty * vat ));
-                    discountamount = Math.round((discount * without_vat_total)/100);
+                    netAmnt = (qty * trade) + (qty * vat);
+                    netAmnt = parseFloat(netAmnt).toFixed(2);
+                    total = (without_vat_total - (discount * without_vat_total)/100) + (qty * vat );
+                    total = parseFloat(total).toFixed(2);
+                    discountamount = (discount * without_vat_total)/100;
+                    discountamount = parseFloat(discountamount).toFixed(2);
                 }
             }
         
