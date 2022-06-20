@@ -99,7 +99,7 @@
     } 
     public function getSalesReportForInvoice($id){
         $sql = "SELECT `sales`.*,
-        `customer`.`c_name`
+        `customer`.`c_name`,`customer`.`cus_contact`
         FROM `sales`
         LEFT JOIN `customer` ON `sales`.`cus_id`=`customer`.`c_id`
         WHERE `sales`.`sale_id`='$id'";

@@ -78,6 +78,7 @@
       foreach ($query->result_array() as $row){
         $new_row['label']=htmlentities(stripslashes($row['c_name']));
         $new_row['value']=htmlentities(stripslashes($row['c_id']));
+        $new_row['c_cont']=htmlentities(stripslashes($row['cus_contact']));
         $new_row['ctype']=htmlentities(stripslashes($row['c_type']));
         $row_set[] = $new_row; //build an array
       }

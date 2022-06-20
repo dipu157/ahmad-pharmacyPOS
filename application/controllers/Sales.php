@@ -404,13 +404,15 @@ class Sales extends CI_Controller {
         $createdate = date('d/m/Y',$invoice->create_date);
         $invoicetime = $invoice->sales_time;
         $createtime = date("h:i:s A",$invoicetime);
-        $customer = $invoice->c_name;
+        $customer_name = $invoice->c_name;
+        $customer_contact = $invoice->cus_contact;
         $invoiceno = $invoice->invoice_no;
 echo " <div class='card-body pos_receipt'>
         <div class='receipt_header'>
           <div class='row'>
           <div class='col-md-12'>
           <p class='company-info' style='padding-bottom:5px;margin-top:-10px;'>
+            <span style='text-align:center; font-size:22px; color: #000'>Cash Memo</span>
             <span style='text-align:center; font-size:18px;'>Ahmad Pharma</span>
             
             <span style='text-align:center;font-size: 12px;font-weight: 600;color: #000;line-height:15px;'> $settings->address</span>
@@ -421,7 +423,7 @@ echo " <div class='card-body pos_receipt'>
           </div>
           <div class='col-md-12'>
           <p class='customer-details;margin-bottom:5px;'>
-            <span style='float:left;right;font-size: 12px;font-weight: 600;color: #000'>ID: $customer</span>
+            <span style='float:left;right;font-size: 12px;font-weight: 600;color: #000'>ID:  $customer_name ($customer_contact) </span>
             <span style='float:right;right;font-size: 12px;font-weight: 600;color: #000'>Invoice# $invoiceno</span><br>
             
           </p>

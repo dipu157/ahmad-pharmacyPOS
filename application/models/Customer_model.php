@@ -51,8 +51,8 @@
 
     } 
 
-    public function GetCustomerBalance($customer){
-        $sql = "SELECT * FROM `customer_ledger` WHERE `customer_id`='$customer'";
+    public function GetCustomerBalance($customerID){
+        $sql = "SELECT * FROM `customer_ledger` WHERE `customer_id`='$customerID'";
         $query = $this->db->query($sql);
         $result = $query->row();
         return $result;
@@ -156,6 +156,15 @@
       FROM `customer_ledger`
       LEFT JOIN `customer` ON `customer_ledger`.`customer_id`=`customer`.`c_id`
       WHERE `customer_ledger`.`customer_id`='$id'";
+      $query = $this->db->query($sql);
+      $result = $query->row();
+      return $result;
+    }
+
+     public function Regular_Customer($customerID){
+    $sql = "SELECT `customer`.*
+      FROM `customer`
+      WHERE `customer`.`c_id`='$customerID'";
       $query = $this->db->query($sql);
       $result = $query->row();
       return $result;

@@ -83,7 +83,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                             <div class="input-group">
                                 <span class="input-group-addon b-r-0"><i class="fa fa-search" aria-hidden="true"></i>
                                 </span>
-                                <input type="text" class="form-control" name="cusid" id="cusid" placeholder="Barcode , Phone No..." tabindex="1" autocomplete="off" >
+                                <input type="text" class="form-control" name="cusid" id="cusid" placeholder="Name , Phone No..." tabindex="1" autocomplete="off" >
                                 <!--<select class="js-customer-data-ajax form-control customer" id="cusid" name="cusid" required  tabindex="1" autocomplete="off">
                                 </select>-->
                             </div>
@@ -95,12 +95,20 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                             <input type="text" class="form-control" name="customer_name" id="customer_name" placeholder="customer name">
                           </div>
                         </div>
-                        <div class="col-md-3 p-l-5">
+                        <div class="col-md-3 p-l-r-5">
                            <div class="input-group" >
                             <span class="input-group-addon b-r-0">
-                            <i class="fa fa-user-o"></i></span>                           
-                            <input type="text" class="form-control customer_id" name="customer_id" id="customer_id" placeholder="customer ID">
+                            <i class="fa fa-user-circle"></i></span>
+                            <input type="text" class="form-control" name="cus_contact" id="cus_contact" placeholder="Phone Number">
                           </div>
+                        </div>
+                        <div>
+                        <!-- <div class="col-md-3 p-l-5"> -->
+                           <!-- <div class="input-group" > -->
+                            <!-- <span class="input-group-addon b-r-0">
+                            <i class="fa fa-user-o"></i></span>  -->                          
+                            <input type="hidden" class="form-control customer_id" name="customer_id" id="customer_id" placeholder="customer ID">
+                          <!-- </div> -->
                         </div>
                         <div class="col-md-3">
                           <div class="row">
@@ -177,6 +185,8 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                         </div>
                       </div>
                       </form>
+
+
                       <form action="" method="post" name="SalesFormConfirm" class="SalesFormConfirm" id="SalesFormConfirm" enctype="multipart/form-data">
                       <div class="row">
                         <div class="col-md-9">
@@ -258,7 +268,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                           <!--Regular customer sales target view-->
                           <div class="row form-group">
                             <div class="col-md-12">
-<!--                              <label for="example-text-input" id="sales" class="col-form-label" style="color:#007bff">
+                            <!--<label for="example-text-input" id="sales" class="col-form-label" style="color:#007bff">
                               </label>-->
                               <!--Dues-->
                               <div id="sales">
@@ -267,21 +277,11 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                             </div>
                           </div>
                         </div>
-                      </div><input type="hidden" id="cid" name="cid" value='' tabindex="-1">
+                      </div>
+                      <input type="hidden" id="cid" name="cid" value='' tabindex="-1">
+                      <input type="hidden" id="cus_name" placeholder="Name" name="cus_name" value='' tabindex="-1">
+                      <input type="hidden" id="cus_mob" name="cus_mob" placeholder="Contact No." value='' tabindex="-1">
                       <div class="row">
-                        <!-- <div class="col-md-3">
-                         
-                          <button type="button" id="saleSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Sale & Invoice
-                          </button>
-                        </div> -->
-                        <!-- <div class="col-md-3">
-                          <button type="button" id="FinalSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Save
-                          </button>
-                        </div>
-                        <div class="col-md-3">
-                          <button type="submit" id="Billhold" class="btn waves-effect waves-light btn-secondary" style="width: 50%;">Hold Bill
-                          </button>
-                        </div> -->
                         <div class="col-md-3">
                           <button type="submit" id="salesposSubmit" class="btn waves-effect waves-light btn-secondary" style="width: 70%;">Invoice & Print 
                           </button>
@@ -350,89 +350,12 @@ $( ".close" ).click(function() {
 });  
  </script>
   <script>
-     // var cid = $('#cusid').val(ui.item.label);
-      //console.log(cid);
             $('#salesposSubmit').hide();
             $('#saleSubmit').hide();
             $('#FinalSubmit').hide();
             $('#Billhold').hide();
       $('#cusid').attr('tabindex',1).focus();
     </script>
-  <!--Save data-->
-     <!--     <script type="text/javascript">
-        $(document).ready(function () {
-        $("#FinalSubmit").on('click',function (event) {
-            event.preventDefault();
-            var formval = $('#SalesFormConfirm')[0];
-            var data = new FormData(formval);
-            $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: "Save_Pos",
-                dataType: 'json',
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-          success: function(response) {
-              if(response.status == 'error') { 
-              $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  console.log(response);
-              } else if(response.status == 'success'){
-                  $(".flashmessage").fadeIn('fast').delay(3000).fadeOut('fast').html(response.message);
-                  console.log(response);
-                    window.setTimeout(function() {
-                    window.location = response.curl;
-                }, 3000);
-              }              
-          },
-          error: function(response) {
-            console.error();
-          }
-            });
-            });
-
-    });
-    </script> -->
-  <!--Hold data-->
-      
-  <!--sale & invoice data-->
-       <!--   <script type="text/javascript">
-        $(document).ready(function () {
-        $("#saleSubmit").on('click',function (event) {
-            event.preventDefault();
-    var x = document.forms['SalesFormConfirm']["pay"].value;
-    if (x == "") {
-        alert("Name must be filled out");
-        //console.log('fgf');
-    } else {              
-            var formval = $('#SalesFormConfirm')[0];
-            var data = new FormData(formval);
-            $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: "Save_Pos_invoice",
-                dataType: 'html',
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-          success: function(response){
-                $("#invoicedom").html(response);
-              $('#invoicemodal').modal({backdrop: 'static', keyboard: false})  
-                $("#invoicemodal").modal("show");              
-          },
-          error: function(response) {
-            console.error();
-          }
-            });
-        }
-            });
-
-    });
-    </script> -->
   <!--sale & invoice & print data-->
 <script type="text/javascript">
         $(document).ready(function () {
@@ -572,6 +495,21 @@ $( ".close" ).click(function() {
           });
         });
    </script> 
+
+  <!--Walkin customer name , phone number fillup-->
+    <script type="text/javascript">
+          $('#customer_name').on('keyup', function() {
+             $('#cus_name').val($(this).val()); 
+          });
+
+          $('#cus_contact').on('keyup', function() {
+             $('#cus_mob').val($(this).val()); 
+          });
+   </script> 
+
+
+
+
     <!--Customer information for c_type & c_name-->
     <script type="text/javascript">
     $(document).ready(function () {
@@ -592,13 +530,11 @@ $( ".close" ).click(function() {
                     // Populate the form fields with the data returned from server
                     $('#SalesFormConfirm').find('[name="cid"]').val(response.mvalue.c_id).end();
                     $('#SalesForm').find('[name="customer_name"]').val(response.mvalue.c_name).end();
+                    $('#SalesForm').find('[name="cus_contact"]').val(response.mvalue.c_contact).end();
                     $('#SalesForm').find('[name="customer_id"]').val(response.mvalue.c_id).end();
                         if(response.mvalue.c_type == 'Regular') {
                         $('#SalesForm').find(':radio[id=regular_customer][value="Regular"]').prop('checked', true).end();
                         } 
-                        // else if(response.mvalue.c_type == 'Wholesale') {
-                        // $('#SalesForm').find(':radio[id=wholesale_customer][value="Wholesale"]').prop('checked', true).end();
-                        // }
                         else if(response.mvalue.c_type == 'WalkIn') {
                         $('#SalesForm').find(':radio[id=WalkIn_customer][value="WalkIn"]').prop('checked', true).end();
                         }                    
@@ -663,10 +599,10 @@ $( ".close" ).click(function() {
         });   
      </script>   
   <!--Select ajax remote data search for customer-->
-<!--  <script type="text/javascript">
+ <script type="text/javascript">
     $(document).ready(function () {
       $(".js-customer-data-ajax").select2({
-        placeholder: "Barcode, Phone number",
+        placeholder: "Name, Phone number",
         allowClear: true,
         multiple: true,
         maximumSelectionSize: 1,          
@@ -684,6 +620,7 @@ $( ".close" ).click(function() {
               results: $.map(data, function (item) {
                 return {
                   text: item.c_name,
+                  contact: item.cus_contact,
                   id: item.c_id
                 };
               })
@@ -692,7 +629,7 @@ $( ".close" ).click(function() {
         }
       });
     });
-  </script> -->
+  </script>
     <script>
 $( function() {
 $(this.target).find('input').autocomplete();
@@ -716,6 +653,7 @@ $(this.target).find('input').autocomplete();
    // Set selection
    $('#cusid').val(''); // display the selected text
    $('#customer_name').val(ui.item.label); // display the selected text
+   $('#cus_contact').val(ui.item.c_cont); // display the Contact
    $('#cid').val(ui.item.value); // display the selected text
    $('#customer_id').val(ui.item.value); // save selected id to input
     if(ui.item.ctype == 'Regular') {
@@ -875,8 +813,6 @@ $("#qty").keypress(function(e) {
             var iid = $('#customer_id').val();
             console.log(iid);
             if(isNaN(iid) == false){
-                //console.log(qty);
-                //var iid = cid[0].id;
                 var iid = $('#customer_id').val();
               }
             var formval = $('#SalesForm')[0];

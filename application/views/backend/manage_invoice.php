@@ -46,7 +46,7 @@
                                            <?php foreach($invoice as $value): ?>
                                             <tr>
                                                 <td><?php echo $value->invoice_no; ?></td>
-                                                <td><?php if(empty($value->c_name)){ echo 'Walk In';} else { echo $value->c_name; } ?></td>
+                                                <td><?php if(empty($value->c_name)){ echo $value->cus_id;} else { echo $value->c_name; } ?></td>
                                                 <td><?php if(empty($value->c_type)){ echo 'Walk In';} else { echo $value->c_type; } ?></td>
                                                 <td><?php echo date('d/m/Y',$value->create_date); ?></td>
                                                 <td><?php echo $value->total_amount; ?></td>

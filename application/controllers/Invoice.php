@@ -775,7 +775,9 @@ class Invoice extends CI_Controller {
     } 
     public function Save_Pos_invoice(){
         $salesid    =   'S'.rand(2000,10000000);
-        $customer   =   $this->input->post('cid');
+        $customerID   =   $this->input->post('cid');
+        $customer_name   =   $this->input->post('cus_name');
+        $cust_contact = $this->input->post('cus_mob');
         $invoice    =   rand(10000000,50000000);
         date_default_timezone_set("Asia/Dhaka");
         $entrydate  =   strtotime(date("Y/m/d"));
@@ -784,8 +786,7 @@ class Invoice extends CI_Controller {
         $gdiscount  =   round($this->input->post('gdiscount'));
         $grandamount =  round($this->input->post('payable'));
         $payi =  round($this->input->post('pay'));
-        $change =  round($this->input->post('return'));
-        
+        $change =  round($this->input->post('return'));        
         $duea =  round($this->input->post('due'));
         $return =  round($this->input->post('return'));
         if($duea >= 0){
@@ -809,10 +810,15 @@ class Invoice extends CI_Controller {
             //echo validation_errors();
             //$this->output->set_output(json_encode($response));
         } else {
-        if(empty($customer)){
-            $customer = 'WalkIn';
+        if(empty($customerID)){
+            if(!empty($cust_contact) && !empty($customer_name)){
+                $customer = $customer_name."(".$cust_contact.")";
+            }else{
+                $customer = "WalkIn";
+            }
         } else {
-                $cbalance = $this->customer_model->GetCustomerBalance($customer);
+
+                $cbalance = $this->customer_model->GetCustomerBalance($customerID);
                 $total = $cbalance->total_balance + $grandamount; 
                 $due = $cbalance->total_due + $duea;
                 $paid = $grandamount - $duea;
@@ -823,13 +829,16 @@ class Invoice extends CI_Controller {
                     'total_paid' => $paidval,
                     'total_due' => $due
                 );
-            $success = $this->invoice_model->Update_Customer_Balance($customer,$data);
+            $success = $this->invoice_model->Update_Customer_Balance($customerID,$data);
+
+            $regular_customer = $this->customer_model->Regular_Customer($customerID);
+            $customer = $regular_customer->c_name."(".$regular_customer->cus_contact.")";
         }           
             $paid = $grandamount - $duea;
                 $data = array();
                 $data = array(
                     'sale_id' => $salesid,
-                    'cus_id' => $customer,
+                    'cus_id' => $customerID,
                     'entryid' => $entry,
                     'invoice_no' => $invoice,
                     'total_discount' => $gdiscount,
@@ -899,12 +908,16 @@ class Invoice extends CI_Controller {
                     //$customer = $this->invoice_model->GetCusTomerForCheckType($customer);
                     $createdate =date("jS  M Y ");
                     $createtime = date("h:i A");
-                $paid = $grandamount - $duea;
+                    $paid = $grandamount - $duea;
+
+                    
+
 echo " <div class='card-body pos_receipt'>
         <div class='receipt_header'>
           <div class='row'>
           <div class='col-md-12'>
           <p class='company-info' style='padding-bottom:5px;margin-top:-10px;'>
+            <span style='text-align:center; font-size:22px;'>Cash Memo</span>
             <span style='text-align:center; font-size:18px;'>Ahmad Pharma</span>
             
             <span style='text-align:center;font-size: 12px;font-weight: 600;color: #000;line-height:15px;'> $settings->address</span>
@@ -956,20 +969,38 @@ echo " <div class='card-body pos_receipt'>
           echo "</tbody></table>
           
           <table style='font-size:8px'>
-            <tr>
-              <td colspan='9'></td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Net Due: $duea Tk.</td>
+          <tr>
+            <td></td>
+            <td></td>
+              <td colspan='7'></td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Total: $paid Tk.</td>
             </tr>
+
             <tr>
+            <td></td>
+            <td></td>
+              <td colspan='7'></td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Discount: $paid Tk.</td>
+            </tr>
+
+            <tr>
+            <td></td>
+            <td></td>
+              <td colspan='7'></td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Payable: $paid Tk.</td>
+            </tr>
+
+          <tr>
             <td></td>
             <td></td>
               <td colspan='7'></td>
               <td style='right;font-size: 12px;font-weight: 600;color: #000'>Paid: $paid Tk.</td>
             </tr>
             <tr>
-                <td colspan='9'></td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Change: $change Tk.</td>
+              <td colspan='9'></td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Net Due: $duea Tk.</td>
             </tr>
+            
           </table>
         </div>
         <div style='padding-left:25px;border-top:1px solid gray; width:38%;color:#000;'>Signature</div>
@@ -997,14 +1028,14 @@ echo " <div class='card-body pos_receipt'>
             redirect(base_url() , 'refresh');
         }
     }
-    public function barcode_print(){
+    // public function barcode_print(){
         
-        if($this->session->userdata('user_login_access') != False) {
-                $this->load->view('backend/barcode-print');
-        } else {
-            redirect(base_url() , 'refresh');
-        }
-    }
+    //     if($this->session->userdata('user_login_access') != False) {
+    //             $this->load->view('backend/barcode-print');
+    //     } else {
+    //         redirect(base_url() , 'refresh');
+    //     }
+    // }
     public function manage_Invoice(){
     if($this->session->userdata('user_login_access') != False) {
         $data['invoice'] = $this->invoice_model->GetAllInvoiceData();
