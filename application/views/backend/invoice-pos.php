@@ -19,7 +19,7 @@ $this->load->view('backend/sidebar');
 #SalesForm :focus {outline: 1px solid rgba(0, 0, 0, 0.3)}
 .select2-container--open .select2-dropdown {left: -37px;width: 250px !important;}
 .select2-container .select2-selection--single{height:37px;}
-.select2-container {;width: 100%!important;}
+.select2-container {width: 100%!important;}
 .select2-container--default .select2-selection--single .select2-selection__rendered{display:none;}
 .select2-container--default .select2-selection--single .select2-selection__arrow{width:100%;}
 .table th, .table thead th{padding-left:10px;}
@@ -227,6 +227,7 @@ h4.previous-due-header {font-size: 14px; font-weight: 600;color: #eb0a8d;margin-
                             </div>
                             <div class="col-md-7">
                               <input class="form-control gdiscount" name="gdiscount" type="text" value="" style="" tabindex="-1">
+                              <input class="form-control total_discount" name="total_discount" type="hidden" value="" style="" tabindex="-1">
                             </div>
                           </div>
                           <div class="row form-group">
@@ -461,7 +462,7 @@ $( ".close" ).click(function() {
    <!--Input value calculation-->
     <script type="text/javascript">
           $(document).ready(function () {
-          $(document).on('keyup','.gdiscount,.grandtotal,.pay,.return,.payable',function() {
+          $(document).on('keyup','.gdiscount, .total_discount, .grandtotal, .pay, .return, .payable',function() {
             var discountamount = 0;  
             //var total;  
             var gtotal = 0; 
@@ -478,6 +479,7 @@ $( ".close" ).click(function() {
 
               var returnval;
               payableval = Math.round(totalval - (pdiscount * totalval)/100);
+              discountamount = Math.round(pdiscount * totalval)/100;
               $(".payable").val(payableval.toFixed(2));
               //console.log(payableval);
                 returnval = payval - payableval;
@@ -491,6 +493,7 @@ $( ".close" ).click(function() {
                 }
                 $(".return").val(returnval.toFixed(2));
                 $(".payable").val(payableval.toFixed(2));
+                $(".total_discount").val(discountamount.toFixed(2));
 
           });
         });
@@ -845,13 +848,13 @@ $("#qty").keypress(function(e) {
                   
                   $('.payable').val(sum.toFixed(2));
               }
-              function calc_discount(){
-                  var discount = 0;
-                  $(".discount").each(function(){
-                      discount += parseFloat($(this).val());
-                  });
-                  $('.gdiscount').val(discount);
-              }
+              // function calc_discount(){
+              //     var discount = 0;
+              //     $(".discount").each(function(){
+              //         discount += parseFloat($(this).val());
+              //     });
+              //     $('.gdiscount').val(discount);
+              // }
               $('#salesposSubmit').show();
             //  $('#saleSubmit').show();
             //  $('#FinalSubmit').show();

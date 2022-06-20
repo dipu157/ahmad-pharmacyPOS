@@ -373,111 +373,111 @@ class Invoice extends CI_Controller {
     		redirect(base_url() , 'refresh');
     	} 
     }
-    public function Save(){
-        $salesid      =   'S'.rand(2000,10000000);
-        $customer   =   $this->input->post('customerid');
-        $invoice    =   rand(1000000000,50000000000);
-        date_default_timezone_set("Asia/Dhaka");
-        $entrydate  =   strtotime(date("Y/m/d"));
-        $time = strtotime(date('Y-m-d H:i:s'));
-        $monthyear  =   date('Y-m');
-        $gdiscount  =   round($this->input->post('gdiscount'));
-        $gtotal  =   round($this->input->post('payable'));
-        $paid =  round($this->input->post('paid'));
-        $due =  round($this->input->post('due'));
-        $qty =  $this->input->post('qty[]');
-        $this->load->library('form_validation');
+    // public function Save(){
+    //     $salesid      =   'S'.rand(2000,10000000);
+    //     $customer   =   $this->input->post('customerid');
+    //     $invoice    =   rand(1000000000,50000000000);
+    //     date_default_timezone_set("Asia/Dhaka");
+    //     $entrydate  =   strtotime(date("Y/m/d"));
+    //     $time = strtotime(date('Y-m-d H:i:s'));
+    //     $monthyear  =   date('Y-m');
+    //     $gdiscount  =   round($this->input->post('gdiscount'));
+    //     $gtotal  =   round($this->input->post('payable'));
+    //     $paid =  round($this->input->post('paid'));
+    //     $due =  round($this->input->post('due'));
+    //     $qty =  $this->input->post('qty[]');
+    //     $this->load->library('form_validation');
 
-        $this->form_validation->set_error_delimiters();
-        $this->form_validation->set_rules('customerid', 'Supplier', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('paid', 'Paid Amount', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('qty[]', 'Quantity', 'trim|required|xss_clean');
+    //     $this->form_validation->set_error_delimiters();
+    //     $this->form_validation->set_rules('customerid', 'Supplier', 'trim|required|xss_clean');
+    //     $this->form_validation->set_rules('paid', 'Paid Amount', 'trim|required|xss_clean');
+    //     $this->form_validation->set_rules('qty[]', 'Quantity', 'trim|required|xss_clean');
 
 
-        if($this->form_validation->run() == FALSE){
-		    $response['status'] = 'error';
-            $response['message'] = validation_errors();
-            $this->output->set_output(json_encode($response));
-        } else {
-                $data = array();
-                $data = array(
-                    'sale_id' => $salesid,
-                    'cus_id' => $customer,
-                    'invoice_no' => $invoice,
-                    'total_discount' => $gdiscount,
-                    'total_amount' => $gtotal,
-                    'paid_amount' => $paid,
-                    'due_amount' => $due,
-                    'create_date' => $entrydate,
-                    'sales_time' => $time
-                ); 
-            $success = $this->invoice_model->Save_Payment($data);
-            $balance = $this->customer_model->GetCustomerBalance($customer);
-            $totalbalance = $balance->total_balance + $gtotal;
-            $totalpaid = $balance->total_paid + $paid;
-            $totaldue = $balance->total_due + $due;
-                $data = array();
-                $data = array(
-                    'total_balance' => $totalbalance,
-                    'total_paid' => $totalpaid,
-                    'total_due' => $totaldue
-                ); 
-            $success = $this->invoice_model->Update_Customer_Balance($customer,$data);            
-            if($this->db->affected_rows()){
-                $account = $this->user_model->GetAccountBalance();
-                $id = $account->id;
-                $amount = $account->amount + $gtotal;
-                $paid = $account->paid + $paid;
-                $due = $account->due + $due;
-                    $data = array(
-                        'amount'   =>  $amount,
-                        'paid'      =>  $paid,
-                        'due'      =>  $due
-                    );
-                $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                
-                foreach($_POST['productid'] as $row=>$name){
-                $medicine   =   $_POST['productid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['smrp'][$row];
-                $total      =   round($_POST['total'][$row]);
-                $discount   =   round($_POST['discount'][$row]);
-                $totaldiscount      =   round($_POST['tdiscount'][$row]);                   
-                    $data = array(
-                        'mid'   =>  $medicine,
-                        'sale_id'      =>  $salesid,
-                        'qty'      =>  $qty,
-                        'rate'  =>    $mrp,
-                        'total_price'   =>  $total,
-                        'discount'   =>  $discount,
-                        'total_discount'  =>  $totaldiscount
-                    );
-                $success = $this->invoice_model->Save_Sales_History($data);
-                }                
-                foreach($_POST['productid'] as $row=>$name){
-                $medicine   =   $_POST['productid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['smrp'][$row];
-                $total      =   round($_POST['total'][$row]);
-                $discount   =   round($_POST['discount'][$row]);
-                $totaldiscount      =   round($_POST['tdiscount'][$row]);      
-                //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
-                //$instock = $medicinestock->instock + $qty;
-                $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
-                $instock = $medicinestock->instock - $qty;    
-                $soldqty = $medicinestock->sale_qty + $qty;    
-                    $data = array(
-                        'instock'  =>  $instock,
-                        'sale_qty'  =>  $soldqty
-                    );
-                $success = $this->purchase_model->Update_Medicine($medicine,$data);
-                }
-            $response['status'] = 'success';
-            $response['message'] = "Successfully Added";
-            $response['curl'] = base_url()."invoice/Create";
-            $this->output->set_output(json_encode($response));
-            }
-        }
-    }
+    //     if($this->form_validation->run() == FALSE){
+		  //   $response['status'] = 'error';
+    //         $response['message'] = validation_errors();
+    //         $this->output->set_output(json_encode($response));
+    //     } else {
+    //             $data = array();
+    //             $data = array(
+    //                 'sale_id' => $salesid,
+    //                 'cus_id' => $customer,
+    //                 'invoice_no' => $invoice,
+    //                 'total_discount' => $gdiscount,
+    //                 'total_amount' => $gtotal,
+    //                 'paid_amount' => $paid,
+    //                 'due_amount' => $due,
+    //                 'create_date' => $entrydate,
+    //                 'sales_time' => $time
+    //             ); 
+    //         $success = $this->invoice_model->Save_Payment($data);
+    //         $balance = $this->customer_model->GetCustomerBalance($customer);
+    //         $totalbalance = $balance->total_balance + $gtotal;
+    //         $totalpaid = $balance->total_paid + $paid;
+    //         $totaldue = $balance->total_due + $due;
+    //             $data = array();
+    //             $data = array(
+    //                 'total_balance' => $totalbalance,
+    //                 'total_paid' => $totalpaid,
+    //                 'total_due' => $totaldue
+    //             ); 
+    //         $success = $this->invoice_model->Update_Customer_Balance($customer,$data);            
+    //         if($this->db->affected_rows()){
+    //             $account = $this->user_model->GetAccountBalance();
+    //             $id = $account->id;
+    //             $amount = $account->amount + $gtotal;
+    //             $paid = $account->paid + $paid;
+    //             $due = $account->due + $due;
+    //                 $data = array(
+    //                     'amount'   =>  $amount,
+    //                     'paid'      =>  $paid,
+    //                     'due'      =>  $due
+    //                 );
+    //             $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                
+    //             foreach($_POST['productid'] as $row=>$name){
+    //             $medicine   =   $_POST['productid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['smrp'][$row];
+    //             $total      =   round($_POST['total'][$row]);
+    //             $discount   =   round($_POST['discount'][$row]);
+    //             $totaldiscount      =   round($_POST['tdiscount'][$row]);                   
+    //                 $data = array(
+    //                     'mid'   =>  $medicine,
+    //                     'sale_id'      =>  $salesid,
+    //                     'qty'      =>  $qty,
+    //                     'rate'  =>    $mrp,
+    //                     'total_price'   =>  $total,
+    //                     'discount'   =>  $discount,
+    //                     'total_discount'  =>  $totaldiscount
+    //                 );
+    //             $success = $this->invoice_model->Save_Sales_History($data);
+    //             }                
+    //             foreach($_POST['productid'] as $row=>$name){
+    //             $medicine   =   $_POST['productid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['smrp'][$row];
+    //             $total      =   round($_POST['total'][$row]);
+    //             $discount   =   round($_POST['discount'][$row]);
+    //             $totaldiscount      =   round($_POST['tdiscount'][$row]);      
+    //             //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
+    //             //$instock = $medicinestock->instock + $qty;
+    //             $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
+    //             $instock = $medicinestock->instock - $qty;    
+    //             $soldqty = $medicinestock->sale_qty + $qty;    
+    //                 $data = array(
+    //                     'instock'  =>  $instock,
+    //                     'sale_qty'  =>  $soldqty
+    //                 );
+    //             $success = $this->purchase_model->Update_Medicine($medicine,$data);
+    //             }
+    //         $response['status'] = 'success';
+    //         $response['message'] = "Successfully Added";
+    //         $response['curl'] = base_url()."invoice/Create";
+    //         $this->output->set_output(json_encode($response));
+    //         }
+    //     }
+    // }
     public function GetPosMedicineForDOM(){
         $mid = $this->input->get('id');
         $cid = $this->input->get('cusid');
@@ -523,256 +523,256 @@ class Invoice extends CI_Controller {
         </tr>";            
         }
     }
-    public function Save_Pos(){
-        $salesid    =   'S'.rand(2000,10000000);
-        $customer   =   $this->input->post('cid');
-        $invoice    =   rand(10000000,50000000);
-        date_default_timezone_set("Asia/Dhaka");
-        $entrydate  =   strtotime(date("Y/m/d"));
-        $monthyear  =   date('Y-m');
-         $time = strtotime(date('Y-m-d H:i:s'));
-        $gdiscount  =   round($this->input->post('gdiscount'));
-        $grandamount =  round($this->input->post('payable'));
-        $payi =  round($this->input->post('pay'));
-        $duea =  round($this->input->post('due'));
-        $return =  round($this->input->post('return'));
-        if($duea >= 0){
-            $paya = $grandamount - $duea;  
-        } elseif($duea < 0){
-            $paya = $grandamount;
-        }
-        $entry = $this->session->userdata('user_login_id');
-        if($this->session->userdata('cnumber')){
-            $type = $this->session->userdata('cnumber');
-        } else {
-             $type = $this->session->userdata('user_type');
-        }
+    // public function Save_Pos(){
+    //     $salesid    =   'S'.rand(2000,10000000);
+    //     $customer   =   $this->input->post('cid');
+    //     $invoice    =   rand(10000000,50000000);
+    //     date_default_timezone_set("Asia/Dhaka");
+    //     $entrydate  =   strtotime(date("Y/m/d"));
+    //     $monthyear  =   date('Y-m');
+    //      $time = strtotime(date('Y-m-d H:i:s'));
+    //     $gdiscount  =   round($this->input->post('gdiscount'));
+    //     $grandamount =  round($this->input->post('payable'));
+    //     $payi =  round($this->input->post('pay'));
+    //     $duea =  round($this->input->post('due'));
+    //     $return =  round($this->input->post('return'));
+    //     if($duea >= 0){
+    //         $paya = $grandamount - $duea;  
+    //     } elseif($duea < 0){
+    //         $paya = $grandamount;
+    //     }
+    //     $entry = $this->session->userdata('user_login_id');
+    //     if($this->session->userdata('cnumber')){
+    //         $type = $this->session->userdata('cnumber');
+    //     } else {
+    //          $type = $this->session->userdata('user_type');
+    //     }
        
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters();
-        $this->form_validation->set_rules('pay', 'Pay Amount', 'trim|required|xss_clean');
-        if($this->form_validation->run() == FALSE){
-		    $response['status'] = 'error';
-            $response['message'] = validation_errors();
-            $this->output->set_output(json_encode($response));
-        } else {
-        if(empty($customer)){
-            $customer = 'WalkIn';
-        } else {
-                $cbalance = $this->customer_model->GetCustomerBalance($customer);
-                $total = $cbalance->total_balance + $grandamount; 
-                $due = $cbalance->total_due + $duea;
-                $paid = $grandamount - $duea;
-                $paidval = $cbalance->total_paid + $paid;
-                $data = array();
-                $data = array(
-                    'total_balance' => $total,
-                    'total_paid' => $paidval,
-                    'total_due' => $due
-                );
-            $success = $this->invoice_model->Update_Customer_Balance($customer,$data);
-        }            
-            $paid = $grandamount - $duea;
-                $data = array();
-                $data = array(
-                    'sale_id' => $salesid,
-                    'cus_id' => $customer,
-                    'entryid' => $entry,
-                    'invoice_no' => $invoice,
-                    'total_discount' => $gdiscount,
-                    'total_amount' => $grandamount,
-                    'paid_amount' => $paid,
-                    'due_amount' => $duea,
-                    'create_date' => $entrydate,
-                    'counter' => $type,
-                    'pay_status' => 'Pay',
-                    'monthyear' => $monthyear,
-                    'sales_time' => $time
-                ); 
-            $success = $this->invoice_model->Save_Sales($data);
-            if($this->db->affected_rows()){
-                $account = $this->user_model->GetAccountBalance();
-                $id = $account->id;
-                $amount = $account->amount + $grandamount;
-                $paid = $account->paid + $paya;
-                $due = $account->due + $duea;
-                    $data = array(
-                        'amount'   =>  $amount,
-                        'paid'      =>  $paid,
-                        'due'      =>  $due
-                    );
-                $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                  
-                foreach($_POST['qty'] as $row=>$name){
-                if(!empty($_POST['qty'][$row])){
-                $medicine   =   $_POST['pid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['mrp'][$row];
-                $discount   =   $_POST['discount'][$row];
-                $total     =   $_POST['total'][$row];                   
-                    $data = array(
-                        'sale_id'   =>  $salesid,
-                        'mid'      =>  $medicine,
-                        'qty'      =>$qty,
-                        'rate'      =>  $mrp,
-                        'total_price'=> $total,
-                        'discount'   =>  $discount
-                    );
-                $success = $this->invoice_model->Save_Sales_History($data);
-                    }
-                }                
-                foreach($_POST['qty'] as $row=>$name){
-                if(!empty($_POST['qty'][$row])){
-                $medicine   =   $_POST['pid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['mrp'][$row];
-                $discount   =   $_POST['discount'][$row];
-                $total     =   $_POST['total'][$row];     
-                //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
-                //$instock = $medicinestock->instock + $qty;
-                $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
-                $instock = $medicinestock->instock - $qty;    
-                $soldqty = $medicinestock->sale_qty + $qty;    
-                    $data = array(
-                        'instock'  =>  $instock,
-                        'sale_qty'  =>  $soldqty
-                    );
-                $success = $this->purchase_model->Update_Medicine($medicine,$data);
-                }
+    //     $this->load->library('form_validation');
+    //     $this->form_validation->set_error_delimiters();
+    //     $this->form_validation->set_rules('pay', 'Pay Amount', 'trim|required|xss_clean');
+    //     if($this->form_validation->run() == FALSE){
+		  //   $response['status'] = 'error';
+    //         $response['message'] = validation_errors();
+    //         $this->output->set_output(json_encode($response));
+    //     } else {
+    //     if(empty($customer)){
+    //         $customer = 'WalkIn';
+    //     } else {
+    //             $cbalance = $this->customer_model->GetCustomerBalance($customer);
+    //             $total = $cbalance->total_balance + $grandamount; 
+    //             $due = $cbalance->total_due + $duea;
+    //             $paid = $grandamount - $duea;
+    //             $paidval = $cbalance->total_paid + $paid;
+    //             $data = array();
+    //             $data = array(
+    //                 'total_balance' => $total,
+    //                 'total_paid' => $paidval,
+    //                 'total_due' => $due
+    //             );
+    //         $success = $this->invoice_model->Update_Customer_Balance($customer,$data);
+    //     }            
+    //         $paid = $grandamount - $duea;
+    //             $data = array();
+    //             $data = array(
+    //                 'sale_id' => $salesid,
+    //                 'cus_id' => $customer,
+    //                 'entryid' => $entry,
+    //                 'invoice_no' => $invoice,
+    //                 'total_discount' => $gdiscount,
+    //                 'total_amount' => $grandamount,
+    //                 'paid_amount' => $paid,
+    //                 'due_amount' => $duea,
+    //                 'create_date' => $entrydate,
+    //                 'counter' => $type,
+    //                 'pay_status' => 'Pay',
+    //                 'monthyear' => $monthyear,
+    //                 'sales_time' => $time
+    //             ); 
+    //         $success = $this->invoice_model->Save_Sales($data);
+    //         if($this->db->affected_rows()){
+    //             $account = $this->user_model->GetAccountBalance();
+    //             $id = $account->id;
+    //             $amount = $account->amount + $grandamount;
+    //             $paid = $account->paid + $paya;
+    //             $due = $account->due + $duea;
+    //                 $data = array(
+    //                     'amount'   =>  $amount,
+    //                     'paid'      =>  $paid,
+    //                     'due'      =>  $due
+    //                 );
+    //             $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                  
+    //             foreach($_POST['qty'] as $row=>$name){
+    //             if(!empty($_POST['qty'][$row])){
+    //             $medicine   =   $_POST['pid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['mrp'][$row];
+    //             $discount   =   $_POST['discount'][$row];
+    //             $total     =   $_POST['total'][$row];                   
+    //                 $data = array(
+    //                     'sale_id'   =>  $salesid,
+    //                     'mid'      =>  $medicine,
+    //                     'qty'      =>$qty,
+    //                     'rate'      =>  $mrp,
+    //                     'total_price'=> $total,
+    //                     'discount'   =>  $discount
+    //                 );
+    //             $success = $this->invoice_model->Save_Sales_History($data);
+    //                 }
+    //             }                
+    //             foreach($_POST['qty'] as $row=>$name){
+    //             if(!empty($_POST['qty'][$row])){
+    //             $medicine   =   $_POST['pid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['mrp'][$row];
+    //             $discount   =   $_POST['discount'][$row];
+    //             $total     =   $_POST['total'][$row];     
+    //             //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
+    //             //$instock = $medicinestock->instock + $qty;
+    //             $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
+    //             $instock = $medicinestock->instock - $qty;    
+    //             $soldqty = $medicinestock->sale_qty + $qty;    
+    //                 $data = array(
+    //                     'instock'  =>  $instock,
+    //                     'sale_qty'  =>  $soldqty
+    //                 );
+    //             $success = $this->purchase_model->Update_Medicine($medicine,$data);
+    //             }
   
-                }
+    //             }
 
-            $response['status'] = 'success';
-            $response['message'] = "Successfully Added";
-            $response['curl'] = base_url()."invoice/Pos_Create";
-            $this->output->set_output(json_encode($response));                
-            }
-        }             
-    }
-    public function Hold_Pos(){
-        $salesid    =   'S'.rand(2000,10000000);
-        $customer   =   $this->input->post('cid');
-        $invoice    =   rand(10000000,50000000);
-        date_default_timezone_set("Asia/Dhaka");
-        $entrydate  =   strtotime(date("Y/m/d"));
-        $monthyear  =   date('Y-m');
-         $time = strtotime(date('Y-m-d H:i:s'));
-        $gdiscount  =   round($this->input->post('gdiscount'));
-        $grandamount =  round($this->input->post('payable'));
-        $payi =  round($this->input->post('pay'));
-        $duea =  round($this->input->post('due'));
-        $return =  round($this->input->post('return'));
-        if($duea >= 0){
-            $paya = $grandamount - $duea;  
-        } elseif($duea < 0){
-            $paya = $grandamount;
-        }        
-        $entry = $this->session->userdata('user_login_id');
-        if($this->session->userdata('cnumber')){
-            $type = $this->session->userdata('cnumber');
-        } else {
-             $type = $this->session->userdata('user_type');
-        }
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters();
-        //$this->form_validation->set_rules('cid', 'customer', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('pay', 'Pay Amount', 'trim|required|xss_clean');
+    //         $response['status'] = 'success';
+    //         $response['message'] = "Successfully Added";
+    //         $response['curl'] = base_url()."invoice/Pos_Create";
+    //         $this->output->set_output(json_encode($response));                
+    //         }
+    //     }             
+    // }
+    // public function Hold_Pos(){
+    //     $salesid    =   'S'.rand(2000,10000000);
+    //     $customer   =   $this->input->post('cid');
+    //     $invoice    =   rand(10000000,50000000);
+    //     date_default_timezone_set("Asia/Dhaka");
+    //     $entrydate  =   strtotime(date("Y/m/d"));
+    //     $monthyear  =   date('Y-m');
+    //      $time = strtotime(date('Y-m-d H:i:s'));
+    //     $gdiscount  =   round($this->input->post('gdiscount'));
+    //     $grandamount =  round($this->input->post('payable'));
+    //     $payi =  round($this->input->post('pay'));
+    //     $duea =  round($this->input->post('due'));
+    //     $return =  round($this->input->post('return'));
+    //     if($duea >= 0){
+    //         $paya = $grandamount - $duea;  
+    //     } elseif($duea < 0){
+    //         $paya = $grandamount;
+    //     }        
+    //     $entry = $this->session->userdata('user_login_id');
+    //     if($this->session->userdata('cnumber')){
+    //         $type = $this->session->userdata('cnumber');
+    //     } else {
+    //          $type = $this->session->userdata('user_type');
+    //     }
+    //     $this->load->library('form_validation');
+    //     $this->form_validation->set_error_delimiters();
+    //     //$this->form_validation->set_rules('cid', 'customer', 'trim|required|xss_clean');
+    //     $this->form_validation->set_rules('pay', 'Pay Amount', 'trim|required|xss_clean');
 
-        if($this->form_validation->run() == FALSE){
-		    $response['status'] = 'error';
-            $response['message'] = validation_errors();
-            $this->output->set_output(json_encode($response));
-        } else {
-        if(empty($customer)){
-            $customer = 'WalkIn';
-        } else {
-                $cbalance = $this->customer_model->GetCustomerBalance($customer);
-                $total = $cbalance->total_balance + $grandamount; 
-                $due = $cbalance->total_due + $duea;
-                $paid = $grandamount - $duea;
-                $paidval = $cbalance->total_paid + $paid;
-                $data = array();
-                $data = array(
-                    'total_balance' => $total,
-                    'total_paid' => $paidval,
-                    'total_due' => $due
-                );
-            $success = $this->invoice_model->Update_Customer_Balance($customer,$data);
-        }            
-            $paid = $grandamount - $duea;
-                $data = array();
-                $data = array(
-                    'sale_id' => $salesid,
-                    'cus_id' => $customer,
-                    'entryid' => $entry,
-                    'invoice_no' => $invoice,
-                    'total_discount' => $gdiscount,
-                    'total_amount' => $grandamount,
-                    'paid_amount' => $paid,
-                    'due_amount' => $duea,
-                    'create_date' => $entrydate,
-                    'counter' => $type,
-                    'pay_status' => 'Hold',
-                    'monthyear' => $monthyear,
-                    'sales_time' => $time
-                ); 
-            $success = $this->invoice_model->Save_Sales($data);
-            if($this->db->affected_rows()){
-                $account = $this->user_model->GetAccountBalance();
-                $id = $account->id;
-                $amount = $account->amount + $grandamount;
-                $paid = $account->paid + $paya;
-                $due = $account->due + $duea;
-                    $data = array(
-                        'amount'   =>  $amount,
-                        'paid'      =>  $paid,
-                        'due'      =>  $due
-                    );
-                $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                
-                foreach($_POST['qty'] as $row=>$name){
-                    if(!empty($_POST['qty'][$row])){
-                $medicine   =   $_POST['pid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['mrp'][$row];
-                $discount   =   $_POST['discount'][$row];
-                $total     =   $_POST['total'][$row];                   
-                    $data = array(
-                        'sale_id'   =>  $salesid,
-                        'mid'      =>  $medicine,
-                        'qty'      =>$qty,
-                        'rate'      =>  $mrp,
-                        'total_price'=> $total,
-                        'discount'   =>  $discount
-                    );
-                $success = $this->invoice_model->Save_Sales_History($data);
-                    }
-                }                
-                foreach($_POST['qty'] as $row=>$name){
-                if(!empty($_POST['qty'][$row])){
-                $medicine   =   $_POST['pid'][$row];
-                $qty        =   $_POST['qty'][$row];
-                $mrp        =   $_POST['mrp'][$row];
-                $discount   =   $_POST['discount'][$row];
-                $total     =   $_POST['total'][$row];     
-                //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
-                //$instock = $medicinestock->instock + $qty;
-                $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
-                $instock = $medicinestock->instock - $qty;    
-                $soldqty = $medicinestock->sale_qty + $qty;    
-                    $data = array(
-                        'instock'  =>  $instock,
-                        'sale_qty'  =>  $soldqty
-                    );
-                $success = $this->purchase_model->Update_Medicine($medicine,$data);
-                }
-            $response['status'] = 'success';
-            $response['message'] = "Successfully Hold";
-            $response['curl'] = base_url()."invoice/Pos_Create";
-            $this->output->set_output(json_encode($response));  
-                }
+    //     if($this->form_validation->run() == FALSE){
+		  //   $response['status'] = 'error';
+    //         $response['message'] = validation_errors();
+    //         $this->output->set_output(json_encode($response));
+    //     } else {
+    //     if(empty($customer)){
+    //         $customer = 'WalkIn';
+    //     } else {
+    //             $cbalance = $this->customer_model->GetCustomerBalance($customer);
+    //             $total = $cbalance->total_balance + $grandamount; 
+    //             $due = $cbalance->total_due + $duea;
+    //             $paid = $grandamount - $duea;
+    //             $paidval = $cbalance->total_paid + $paid;
+    //             $data = array();
+    //             $data = array(
+    //                 'total_balance' => $total,
+    //                 'total_paid' => $paidval,
+    //                 'total_due' => $due
+    //             );
+    //         $success = $this->invoice_model->Update_Customer_Balance($customer,$data);
+    //     }            
+    //         $paid = $grandamount - $duea;
+    //             $data = array();
+    //             $data = array(
+    //                 'sale_id' => $salesid,
+    //                 'cus_id' => $customer,
+    //                 'entryid' => $entry,
+    //                 'invoice_no' => $invoice,
+    //                 'total_discount' => $gdiscount,
+    //                 'total_amount' => $grandamount,
+    //                 'paid_amount' => $paid,
+    //                 'due_amount' => $duea,
+    //                 'create_date' => $entrydate,
+    //                 'counter' => $type,
+    //                 'pay_status' => 'Hold',
+    //                 'monthyear' => $monthyear,
+    //                 'sales_time' => $time
+    //             ); 
+    //         $success = $this->invoice_model->Save_Sales($data);
+    //         if($this->db->affected_rows()){
+    //             $account = $this->user_model->GetAccountBalance();
+    //             $id = $account->id;
+    //             $amount = $account->amount + $grandamount;
+    //             $paid = $account->paid + $paya;
+    //             $due = $account->due + $duea;
+    //                 $data = array(
+    //                     'amount'   =>  $amount,
+    //                     'paid'      =>  $paid,
+    //                     'due'      =>  $due
+    //                 );
+    //             $success = $this->user_model->UPDATE_ACCOUNT($id,$data);                
+    //             foreach($_POST['qty'] as $row=>$name){
+    //                 if(!empty($_POST['qty'][$row])){
+    //             $medicine   =   $_POST['pid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['mrp'][$row];
+    //             $discount   =   $_POST['discount'][$row];
+    //             $total     =   $_POST['total'][$row];                   
+    //                 $data = array(
+    //                     'sale_id'   =>  $salesid,
+    //                     'mid'      =>  $medicine,
+    //                     'qty'      =>$qty,
+    //                     'rate'      =>  $mrp,
+    //                     'total_price'=> $total,
+    //                     'discount'   =>  $discount
+    //                 );
+    //             $success = $this->invoice_model->Save_Sales_History($data);
+    //                 }
+    //             }                
+    //             foreach($_POST['qty'] as $row=>$name){
+    //             if(!empty($_POST['qty'][$row])){
+    //             $medicine   =   $_POST['pid'][$row];
+    //             $qty        =   $_POST['qty'][$row];
+    //             $mrp        =   $_POST['mrp'][$row];
+    //             $discount   =   $_POST['discount'][$row];
+    //             $total     =   $_POST['total'][$row];     
+    //             //$medicinestock = $this->purchase_model->getMedicineStock($medicine);
+    //             //$instock = $medicinestock->instock + $qty;
+    //             $medicinestock = $this->purchase_model->getmedicineByMId($medicine);
+    //             $instock = $medicinestock->instock - $qty;    
+    //             $soldqty = $medicinestock->sale_qty + $qty;    
+    //                 $data = array(
+    //                     'instock'  =>  $instock,
+    //                     'sale_qty'  =>  $soldqty
+    //                 );
+    //             $success = $this->purchase_model->Update_Medicine($medicine,$data);
+    //             }
+    //         $response['status'] = 'success';
+    //         $response['message'] = "Successfully Hold";
+    //         $response['curl'] = base_url()."invoice/Pos_Create";
+    //         $this->output->set_output(json_encode($response));  
+    //             }
 
-            }
-        }             
-    } 
+    //         }
+    //     }             
+    // } 
     public function Save_Pos_invoice(){
         $salesid    =   'S'.rand(2000,10000000);
         $customerID   =   $this->input->post('cid');
@@ -783,12 +783,13 @@ class Invoice extends CI_Controller {
         $entrydate  =   strtotime(date("Y/m/d"));
         $monthyear  =   date('Y-m');
          $time = strtotime(date('Y-m-d H:i:s'));
-        $gdiscount  =   round($this->input->post('gdiscount'));
+        $gdiscount  =   round($this->input->post('total_discount'));
         $grandamount =  round($this->input->post('payable'));
         $payi =  round($this->input->post('pay'));
         $change =  round($this->input->post('return'));        
         $duea =  round($this->input->post('due'));
         $return =  round($this->input->post('return'));
+        $net_total = $grandamount + $gdiscount;
         if($duea >= 0){
             $paya = $grandamount - $duea;  
         } elseif($duea < 0){
@@ -955,6 +956,7 @@ echo " <div class='card-body pos_receipt'>
                 $discount   =   $_POST['discount'][$row];
                 $total     =   $_POST['total'][$row];
                 $mresult = $this->medicine_model->GetMedicineValueById($medicine);
+                $eachtotal = $qty * $mresult->mrp;
                     
             echo"<tr>
             <td style='right;font-size: 12px;font-weight: 600;color: #000'>";echo $id; echo"</td>
@@ -962,7 +964,7 @@ echo " <div class='card-body pos_receipt'>
                 $mresult->product_name
               </td>
               <td style='right;font-size: 12px;font-weight: 600;color: #000'>$qty * $mresult->mrp</td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$total Tk.</td>              
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$eachtotal Tk.</td>              
             </tr>";
                 }
                 endforeach;
@@ -973,21 +975,21 @@ echo " <div class='card-body pos_receipt'>
             <td></td>
             <td></td>
               <td colspan='7'></td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Total: $paid Tk.</td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Total: $net_total Tk.</td>
             </tr>
 
             <tr>
             <td></td>
             <td></td>
               <td colspan='7'></td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Discount: $paid Tk.</td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Discount: $gdiscount Tk.</td>
             </tr>
 
             <tr>
             <td></td>
             <td></td>
               <td colspan='7'></td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Payable: $paid Tk.</td>
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>Payable: $grandamount Tk.</td>
             </tr>
 
           <tr>

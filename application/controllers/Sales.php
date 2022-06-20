@@ -442,22 +442,24 @@ echo " <div class='card-body pos_receipt'>
                 $id = 0;
         foreach($invoice_details as $value):
                 $id +=1;
+                $eachprice = $value->qty * $value->mrp;
             echo"<tr>
             <td style='right;font-size: 12px;font-weight: 600;color: #000'>";echo $id; echo"</td>
               <td class='medicine_name' style='right;font-size: 12px;font-weight: 600;color: #000'>
                 $value->product_name
               </td>
               <td style='right;font-size: 12px;font-weight: 600;color: #000'>$value->qty * $value->mrp</td>
-              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$value->total_price tk.</td>              
+              <td style='right;font-size: 12px;font-weight: 600;color: #000'>$eachprice tk.</td>              
             </tr>";
                 
                 endforeach;
           echo "</tbody>
-          
+
             <tr style='margin-top:20px;'>
             <td></td>
             <td></td>
               <td colspan='1' style='right;font-size: 12px;font-weight: 600;color: #000'>Net Payable (After Disc.):</td>
+
               <td style='right;font-size: 12px;font-weight: 600;color: #000'>$invoice->total_amount tk.</td>
             </tr>
             <tr>
